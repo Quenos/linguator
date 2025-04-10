@@ -1,4 +1,6 @@
 fastapi
 uvicorn[standard]
 motor
-python-dotenv 
+python-dotenv
+fastapi-babel
+pydantic[email] 
