@@ -79,8 +79,6 @@ class WordPairInDB(WordPairBase):
 
     model_config = ConfigDict(
         populate_by_name = True, # Renamed from allow_population_by_field_name
-        arbitrary_types_allowed = True, # Still needed for ObjectId if not using __get_pydantic_core_schema__ fully
-        json_encoders = {ObjectId: str}, # Still useful for custom encoding if needed
         json_schema_extra = { # Renamed from schema_extra
             "example": {
                 "_id": "60d5ec49f7eade7f5c9f2f5e", # Example ObjectId
@@ -95,9 +93,20 @@ class WordPairInDB(WordPairBase):
     )
 
 # Optional: Model for update operations if you need different fields/validation
-# class WordPairUpdate(BaseModel):
-#    source_word: Optional[str]
-#    target_word: Optional[str]
-#    category: Optional[str]
-#    example_sentence: Optional[str]
-#    updated_at: datetime = Field(default_factory=datetime.utcnow) # Force update timestamp 
+class WordPairUpdate(BaseModel):
+   """Model for updating a word pair (all fields optional)"""
+   source_word: Optional[str] = None
+   target_word: Optional[str] = None
+   category: Optional[str] = None
+   example_sentence: Optional[str] = None
+   # updated_at is typically handled by the database logic during the update operation
+
+   model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "source_word": "goodbye",
+                "target_word": "arrivederci",
+                "category": "farewell"
+            }
+        }
+    ) 
