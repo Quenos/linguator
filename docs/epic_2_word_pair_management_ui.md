@@ -14,6 +14,8 @@
 
     2.  **Ticket: Add New Word Pair Form UI**
         *   **Background:** Implement the form interface for users to input new word pairs (source, target, category, example sentence).
+        category are grammatical names like: Noun, pronoun, verb etc etc
+        All fields are required.
         *   **Acceptance Criteria:**
             *   A form with input fields for source word, target word, category (dropdown/select), and example sentence is displayed.
             *   A "Save" button calls the `POST /word-pairs` endpoint with the form data.
