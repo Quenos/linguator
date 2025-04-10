@@ -5,4 +5,14 @@ line-length = 88
 select = ["E", "F", "W", "I", "UP"]
 
 [tool.ruff.format]
-quote-style = "double" 
+quote-style = "double"
+
+[tool.pytest.ini_options]
+pythonpath = [
+  ".", "src"
+]
+asyncio_mode = "auto" # Automatically handle asyncio tests
+# asyncio_default_fixture_loop_scope = "session" # Example if you needed session scope later
+# testpaths = [
+#     "tests",
+# ] 
