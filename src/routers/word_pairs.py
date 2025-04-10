@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Body, HTTPException, status, Depends
+from fastapi import APIRouter, Body, HTTPException, status, Depends, Request
 from fastapi.responses import Response, JSONResponse
 from fastapi.encoders import jsonable_encoder
 from typing import List
@@ -30,9 +30,8 @@ def get_word_pair_collection(db: AsyncIOMotorDatabase = Depends(get_database)) -
     """Dependency to get the word_pairs collection."""
     return db[COLLECTION_NAME]
 
-
 router = APIRouter(
-    prefix="/word-pairs",
+    # prefix="/word-pairs", # Keep prefix in main.py's include_router for flexibility
     tags=["word-pairs"], # Tag for OpenAPI documentation
     responses={404: {"description": "Not found"}}, # Default 404 response
 )

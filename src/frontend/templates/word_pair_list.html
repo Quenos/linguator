@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Pair List</title>
+    <!-- Basic Styling (optional) -->
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .actions { text-align: center; }
+        .actions button { margin: 0 5px; cursor: pointer; }
+        #loading-indicator { margin-top: 10px; color: gray; }
+        .htmx-indicator { display: inline-block; }
+        .htmx-request .htmx-indicator { display: inline-block; }
+        .htmx-request.htmx-indicator { display: inline-block; }
+    </style>
+</head>
+<body>
+
+    <h1>Word Pairs</h1>
+
+    <!-- Placeholder for Search/Filter (Ticket 5) -->
+    <div>
+        <input type="search" placeholder="Search..." disabled />
+    </div>
+
+    <!-- Table that will be populated by JS -->
+    <table>
+        <thead>
+            <tr>
+                <th>Source Word</th>
+                <th>Target Word</th>
+                <th>Category</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="word-pair-table-body">
+            <!-- Initial loading message (will be replaced by JS) -->
+            <tr><td colspan="4" style="text-align: center;" id="loading-indicator">Loading word pairs...</td></tr>
+        </tbody>
+    </table>
+
+    <!-- Placeholder for Add Form (Ticket 2) -->
+    <div>
+        <h2>Add New Word Pair</h2>
+        <button disabled>Add New (Placeholder)</button>
+    </div>
+
+    <!-- Include JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tableBody = document.getElementById('word-pair-table-body');
+            const loadingIndicator = document.getElementById('loading-indicator');
+
+            function displayError(message) {
+                tableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: red;">${message}</td></tr>`;
+            }
+
+            function displayWordPairs(wordPairs) {
+                // Clear loading state
+                tableBody.innerHTML = '';
+
+                if (!wordPairs || wordPairs.length === 0) {
+                    tableBody.innerHTML = `<tr><td colspan="4" style="text-align: center;">No word pairs found.</td></tr>`;
+                    return;
+                }
+
+                wordPairs.forEach(pair => {
+                    const row = tableBody.insertRow();
+                    row.innerHTML = `
+                        <td>${escapeHtml(pair.source_word)}</td>
+                        <td>${escapeHtml(pair.target_word)}</td>
+                        <td>${escapeHtml(pair.category)}</td>
+                        <td class="actions">
+                            <button disabled>Edit</button> <!-- Placeholder -->
+                            <button disabled>Delete</button> <!-- Placeholder -->
+                        </td>
+                    `;
+                });
+            }
+
+            // Simple HTML escaping function
+            function escapeHtml(unsafe) {
+                if (typeof unsafe !== 'string') {
+                  console.warn('escapeHtml received non-string value:', unsafe);
+                  return ''; // Return empty string for non-string types
+                }
+                return unsafe
+                         .replace(/&/g, "&amp;")
+                         .replace(/</g, "&lt;")
+                         .replace(/>/g, "&gt;")
+                         .replace(/"/g, "&quot;")
+                         .replace(/'/g, "&#039;");
+            }
+
+            // Fetch data from the API
+            fetch('/word-pairs/') // Use the JSON API endpoint
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    displayWordPairs(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching word pairs:', error);
+                    displayError('Failed to load word pairs. Please try again later.');
+                });
+        });
+    </script>
+
+</body>
+</html> 

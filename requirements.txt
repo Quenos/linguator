@@ -3,4 +3,5 @@ uvicorn
 motor
 python-dotenv
 fastapi-babel
-pydantic 
+pydantic
+jinja2 
