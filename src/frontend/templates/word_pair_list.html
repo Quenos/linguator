@@ -7,15 +7,27 @@
     <!-- Basic Styling (optional) -->
     <style>
         body { font-family: sans-serif; margin: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; margin-bottom: 20px; }
         th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
         th { background-color: #f2f2f2; }
         .actions { text-align: center; }
         .actions button { margin: 0 5px; cursor: pointer; }
-        #loading-indicator { margin-top: 10px; color: gray; }
+        #loading-indicator, #empty-message { text-align: center; color: gray; }
         .htmx-indicator { display: inline-block; }
         .htmx-request .htmx-indicator { display: inline-block; }
         .htmx-request.htmx-indicator { display: inline-block; }
+        /* Form Styles */
+        #add-form { border: 1px solid #ccc; padding: 15px; margin-top: 20px; border-radius: 5px; background-color: #f9f9f9;}
+        #add-form label { display: block; margin-bottom: 5px; font-weight: bold; }
+        #add-form input[type="text"],
+        #add-form select,
+        #add-form textarea { width: calc(100% - 16px); padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 3px; }
+        #add-form textarea { resize: vertical; min-height: 60px; }
+        #add-form button { padding: 10px 15px; background-color: #28a745; color: white; border: none; border-radius: 3px; cursor: pointer; }
+        #add-form button:hover { background-color: #218838; }
+        #form-feedback { margin-top: 10px; padding: 10px; border-radius: 3px; display: none; }
+        #form-feedback.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        #form-feedback.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
     </style>
 </head>
 <body>
@@ -34,59 +46,67 @@
                 <th>Source Word</th>
                 <th>Target Word</th>
                 <th>Category</th>
+                <th>Example Sentence</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody id="word-pair-table-body">
             <!-- Initial loading message (will be replaced by JS) -->
-            <tr><td colspan="4" style="text-align: center;" id="loading-indicator">Loading word pairs...</td></tr>
+            <tr><td colspan="5" id="loading-indicator">Loading word pairs...</td></tr>
         </tbody>
     </table>
 
-    <!-- Placeholder for Add Form (Ticket 2) -->
-    <div>
+    <!-- Add New Word Pair Form (Ticket 2) -->
+    <div id="add-form-container">
         <h2>Add New Word Pair</h2>
-        <button disabled>Add New (Placeholder)</button>
+        <form id="add-form">
+            <div>
+                <label for="source_word">Source Word:</label>
+                <input type="text" id="source_word" name="source_word" required>
+            </div>
+            <div>
+                <label for="target_word">Target Word:</label>
+                <input type="text" id="target_word" name="target_word" required>
+            </div>
+            <div>
+                <label for="category">Category:</label>
+                <select id="category" name="category" required>
+                    <option value="" disabled selected>Select a category</option>
+                    <option value="Noun">Noun</option>
+                    <option value="Pronoun">Pronoun</option>
+                    <option value="Verb">Verb</option>
+                    <option value="Adjective">Adjective</option>
+                    <option value="Adverb">Adverb</option>
+                    <option value="Preposition">Preposition</option>
+                    <option value="Conjunction">Conjunction</option>
+                    <option value="Interjection">Interjection</option>
+                    <option value="Phrase">Phrase</option>
+                    <option value="Sentence">Sentence</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div>
+                <label for="example_sentence">Example Sentence:</label>
+                <textarea id="example_sentence" name="example_sentence"></textarea>
+            </div>
+            <button type="submit">Save Word Pair</button>
+        </form>
+        <div id="form-feedback"></div>
     </div>
 
     <!-- Include JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const tableBody = document.getElementById('word-pair-table-body');
-            const loadingIndicator = document.getElementById('loading-indicator');
+            const addForm = document.getElementById('add-form');
+            const formFeedback = document.getElementById('form-feedback');
 
-            function displayError(message) {
-                tableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: red;">${message}</td></tr>`;
-            }
-
-            function displayWordPairs(wordPairs) {
-                // Clear loading state
-                tableBody.innerHTML = '';
-
-                if (!wordPairs || wordPairs.length === 0) {
-                    tableBody.innerHTML = `<tr><td colspan="4" style="text-align: center;">No word pairs found.</td></tr>`;
-                    return;
-                }
-
-                wordPairs.forEach(pair => {
-                    const row = tableBody.insertRow();
-                    row.innerHTML = `
-                        <td>${escapeHtml(pair.source_word)}</td>
-                        <td>${escapeHtml(pair.target_word)}</td>
-                        <td>${escapeHtml(pair.category)}</td>
-                        <td class="actions">
-                            <button disabled>Edit</button> <!-- Placeholder -->
-                            <button disabled>Delete</button> <!-- Placeholder -->
-                        </td>
-                    `;
-                });
-            }
-
-            // Simple HTML escaping function
             function escapeHtml(unsafe) {
                 if (typeof unsafe !== 'string') {
-                  console.warn('escapeHtml received non-string value:', unsafe);
-                  return ''; // Return empty string for non-string types
+                  if (unsafe === null || typeof unsafe === 'undefined') return '';
+                  if (typeof unsafe === 'number') return unsafe.toString();
+                  console.warn('escapeHtml received unexpected type:', typeof unsafe, unsafe);
+                  return '';
                 }
                 return unsafe
                          .replace(/&/g, "&amp;")
@@ -96,21 +116,121 @@
                          .replace(/'/g, "&#039;");
             }
 
-            // Fetch data from the API
-            fetch('/word-pairs/') // Use the JSON API endpoint
+            function displayFeedback(message, type) {
+                formFeedback.textContent = message;
+                formFeedback.className = '';
+                formFeedback.classList.add(type);
+                formFeedback.style.display = 'block';
+                setTimeout(() => {
+                    formFeedback.style.display = 'none';
+                }, 5000);
+            }
+
+            function displayErrorInTable(message) {
+                tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: red;">${escapeHtml(message)}</td></tr>`;
+            }
+
+            function displayWordPairs(wordPairs) {
+                tableBody.innerHTML = '';
+
+                if (!wordPairs || wordPairs.length === 0) {
+                    tableBody.innerHTML = `<tr id="empty-message"><td colspan="5">No word pairs found. Add one below!</td></tr>`;
+                    return;
+                }
+
+                wordPairs.forEach(pair => {
+                    const row = tableBody.insertRow();
+                    row.dataset.id = pair.id;
+                    row.innerHTML = `
+                        <td>${escapeHtml(pair.source_word)}</td>
+                        <td>${escapeHtml(pair.target_word)}</td>
+                        <td>${escapeHtml(pair.category)}</td>
+                        <td>${escapeHtml(pair.example_sentence)}</td>
+                        <td class="actions">
+                            <button disabled>Edit</button>
+                            <button disabled>Delete</button>
+                        </td>
+                    `;
+                });
+            }
+
+            function fetchAndDisplayWordPairs() {
+                const loadingRowHTML = `<tr><td colspan="5" id="loading-indicator">Loading word pairs...</td></tr>`;
+                const existingIndicator = tableBody.querySelector('#loading-indicator');
+                const existingEmptyMessage = tableBody.querySelector('#empty-message');
+                const hasContent = tableBody.querySelector('tr') && !existingIndicator && !existingEmptyMessage;
+
+                if (!hasContent) {
+                    tableBody.innerHTML = loadingRowHTML;
+                }
+
+                fetch('/word-pairs/')
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.json().then(err => {
+                                throw new Error(err.detail || `HTTP error! status: ${response.status}`);
+                            }).catch(() => {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                             });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        displayWordPairs(data);
+                    })
+                    .catch(error => {
+                        console.error('Error fetching word pairs:', error);
+                        displayErrorInTable(`Failed to load word pairs: ${error.message}`);
+                    });
+            }
+
+            addForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                formFeedback.style.display = 'none';
+
+                const formData = new FormData(addForm);
+                const data = Object.fromEntries(formData.entries());
+
+                if (!data.source_word || !data.target_word || !data.category) {
+                    displayFeedback('Please fill out Source Word, Target Word, and Category.', 'error');
+                    return;
+                }
+
+                fetch('/word-pairs/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
+                         return response.json().then(err => {
+                            throw new Error(err.detail || `Failed to save word pair. Status: ${response.status}`);
+                         }).catch(() => {
+                            throw new Error(`Failed to save word pair. Status: ${response.status}`);
+                         });
                     }
-                    return response.json();
+                     const contentType = response.headers.get("content-type");
+                     if (contentType && contentType.indexOf("application/json") !== -1) {
+                         return response.json();
+                     } else {
+                         return null;
+                     }
                 })
-                .then(data => {
-                    displayWordPairs(data);
+                .then(newPairOrNull => {
+                    displayFeedback('Word pair saved successfully!', 'success');
+                    addForm.reset();
+                    fetchAndDisplayWordPairs();
                 })
                 .catch(error => {
-                    console.error('Error fetching word pairs:', error);
-                    displayError('Failed to load word pairs. Please try again later.');
+                    console.error('Error saving word pair:', error);
+                    displayFeedback(`Error: ${error.message}`, 'error');
                 });
+            });
+
+            fetchAndDisplayWordPairs();
         });
     </script>
 
