@@ -1,30 +1,54 @@
-from pydantic import BaseModel, Field
-from typing import Optional
+from pydantic import BaseModel, Field, ConfigDict
+from typing import Optional, Any
 from datetime import datetime
 from bson import ObjectId # Import ObjectId
 from pydantic_core import core_schema # Import core_schema
-from pydantic.json_schema import JsonSchemaValue, GetJsonSchemaHandler # Add this import
+from pydantic.json_schema import JsonSchemaValue, GetJsonSchemaHandler
+from pydantic import GetCoreSchemaHandler
 
 # Helper class for handling MongoDB ObjectId
-# See: https://www.mongodb.com/developer/languages/python/python-quickstart-fastapi/
+# Updated for Pydantic V2 - Simplified
 class PyObjectId(ObjectId):
     @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
+    def __get_pydantic_core_schema__(
+        cls, source_type: Any, handler: GetCoreSchemaHandler
+    ) -> core_schema.CoreSchema:
+        """Define the Pydantic V2 core schema for ObjectId validation and serialization."""
+        # Validator function: takes input and returns ObjectId or raises ValueError
+        def validate_from_input(value: Any) -> ObjectId:
+            if isinstance(value, ObjectId):
+                return value
+            if ObjectId.is_valid(str(value)): # Try converting to string first
+                return ObjectId(str(value))
+            raise ValueError(f"Invalid ObjectId: {value}")
 
-    @classmethod
-    def validate(cls, v):
-        if not ObjectId.is_valid(v):
-            raise ValueError("Invalid ObjectId")
-        return ObjectId(v)
+        # Schema for input: Accepts str or ObjectId
+        # Use core_schema.with_info_plain_validator_function for compatibility
+        # with potential future context needs, though not used here.
+        input_schema = core_schema.with_info_plain_validator_function(validate_from_input)
 
+        return core_schema.json_or_python_schema(
+            # Schema used for JSON parsing (expects string)
+            json_schema=core_schema.chain_schema([
+                core_schema.str_schema(), # Input must be a string in JSON
+                input_schema
+            ]),
+            # Schema used for Python object validation (accepts str or ObjectId)
+            python_schema=core_schema.union_schema([
+                core_schema.is_instance_schema(ObjectId), # Allow ObjectId directly
+                input_schema # Allow other types handled by validator
+            ]),
+            # How to serialize the ObjectId to JSON (as string)
+            serialization=core_schema.plain_serializer_function_ser_schema(lambda x: str(x))
+        )
+
+    # Keep __get_pydantic_json_schema__ for OpenAPI documentation generation
     @classmethod
     def __get_pydantic_json_schema__(
-        cls,
-        core_schema: core_schema.CoreSchema,
-        handler: 'GetJsonSchemaHandler',
+        cls, _core_schema: core_schema.CoreSchema, handler: GetJsonSchemaHandler
     ) -> JsonSchemaValue:
-        return core_schema.str_schema()
+        # Tell FastAPI/OpenAPI that this field is a string
+        return handler(core_schema.str_schema())
 
 
 class WordPairBase(BaseModel):
@@ -34,9 +58,9 @@ class WordPairBase(BaseModel):
     category: Optional[str] = None # e.g., noun, verb, phrase
     example_sentence: Optional[str] = None
 
-    class Config:
-        # Example data for documentation
-        schema_extra = {
+    # Pydantic V2 uses model_config instead of Config class
+    model_config = ConfigDict(
+        json_schema_extra = { # Renamed from schema_extra
             "example": {
                 "source_word": "hello",
                 "target_word": "ciao",
@@ -44,20 +68,20 @@ class WordPairBase(BaseModel):
                 "example_sentence": "Say hello when you see him."
             }
         }
+    )
 
 class WordPairInDB(WordPairBase):
     """Model representing a word pair as stored in the database (includes ID)"""
-    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
-    # Timestamps can be added here if you want them automatically handled by Pydantic
-    # Or managed during database operations
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    updated_at: datetime = Field(default_factory=datetime.utcnow)
+    id: PyObjectId = Field(..., alias="_id") # Removed default_factory, id is required
+    # Timestamps are set during database operations, no default factory needed here
+    created_at: datetime
+    updated_at: datetime
 
-    class Config:
-        allow_population_by_field_name = True # Allows using '_id' when creating instance
-        arbitrary_types_allowed = True # Needed for ObjectId
-        json_encoders = {ObjectId: str} # Serialize ObjectId to string
-        schema_extra = {
+    model_config = ConfigDict(
+        populate_by_name = True, # Renamed from allow_population_by_field_name
+        arbitrary_types_allowed = True, # Still needed for ObjectId if not using __get_pydantic_core_schema__ fully
+        json_encoders = {ObjectId: str}, # Still useful for custom encoding if needed
+        json_schema_extra = { # Renamed from schema_extra
             "example": {
                 "_id": "60d5ec49f7eade7f5c9f2f5e", # Example ObjectId
                 "source_word": "world",
@@ -68,6 +92,7 @@ class WordPairInDB(WordPairBase):
                 "updated_at": "2023-01-01T12:00:00Z"
             }
         }
+    )
 
 # Optional: Model for update operations if you need different fields/validation
 # class WordPairUpdate(BaseModel):
