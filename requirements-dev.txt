@@ -2,4 +2,5 @@ ruff
 pytest
 pytest-asyncio
 fastapi-babel
-Babel 
+Babel
+httpx 
