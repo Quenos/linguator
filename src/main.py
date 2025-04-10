@@ -43,12 +43,6 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
-# @app.middleware("http")
-# async def get_language_header(request: Request, call_next):
-#     # Let the installed Babel middleware handle language detection
-#     response = await call_next(request)
-#     return response
-
 app.include_router(word_pairs.router)
 
 @app.get("/")

@@ -1,6 +1,7 @@
-ruff
 pytest
+httpx
 pytest-asyncio
+
+ruff
 fastapi-babel
-Babel
-httpx 
+Babel 
