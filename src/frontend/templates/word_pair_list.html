@@ -11,23 +11,80 @@
         th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
         th { background-color: #f2f2f2; }
         .actions { text-align: center; }
-        .actions button { margin: 0 5px; cursor: pointer; }
+        .actions button { margin: 0 5px; cursor: pointer; padding: 5px 10px; border-radius: 3px; border: 1px solid #ccc; }
+        .actions .edit-btn { background-color: #ffc107; color: black; }
+        .actions .edit-btn:hover { background-color: #e0a800; }
+        .actions .delete-btn { background-color: #dc3545; color: white; }
+        .actions .delete-btn:hover { background-color: #c82333; }
         #loading-indicator, #empty-message { text-align: center; color: gray; }
         .htmx-indicator { display: inline-block; }
         .htmx-request .htmx-indicator { display: inline-block; }
         .htmx-request.htmx-indicator { display: inline-block; }
         /* Form Styles */
-        #add-form { border: 1px solid #ccc; padding: 15px; margin-top: 20px; border-radius: 5px; background-color: #f9f9f9;}
-        #add-form label { display: block; margin-bottom: 5px; font-weight: bold; }
-        #add-form input[type="text"],
-        #add-form select,
-        #add-form textarea { width: calc(100% - 16px); padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 3px; }
-        #add-form textarea { resize: vertical; min-height: 60px; }
-        #add-form button { padding: 10px 15px; background-color: #28a745; color: white; border: none; border-radius: 3px; cursor: pointer; }
-        #add-form button:hover { background-color: #218838; }
-        #form-feedback { margin-top: 10px; padding: 10px; border-radius: 3px; display: none; }
-        #form-feedback.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        #form-feedback.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .form-container { border: 1px solid #ccc; padding: 15px; margin-top: 20px; border-radius: 5px; background-color: #f9f9f9;}
+        .form-container label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-container input[type="text"],
+        .form-container select,
+        .form-container textarea { width: calc(100% - 16px); padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 3px; }
+        .form-container textarea { resize: vertical; min-height: 60px; }
+        .form-container button[type="submit"] { padding: 10px 15px; background-color: #28a745; color: white; border: none; border-radius: 3px; cursor: pointer; }
+        .form-container button[type="submit"]:hover { background-color: #218838; }
+        .form-feedback { margin-top: 10px; padding: 10px; border-radius: 3px; display: none; }
+        .form-feedback.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .form-feedback.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+        /* Modal Styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+            max-width: 500px;
+            border-radius: 5px;
+            position: relative;
+        }
+        .close-btn {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-btn:hover,
+        .close-btn:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        #edit-form button[type="button"] { /* Style for Cancel button */
+             background-color: #6c757d;
+             color: white;
+             margin-left: 10px;
+             padding: 10px 15px;
+             border: none;
+             border-radius: 3px;
+             cursor: pointer;
+        }
+        #edit-form button[type="button"]:hover {
+             background-color: #5a6268;
+        }
+
     </style>
 </head>
 <body>
@@ -57,20 +114,20 @@
     </table>
 
     <!-- Add New Word Pair Form (Ticket 2) -->
-    <div id="add-form-container">
+    <div id="add-form-container" class="form-container">
         <h2>Add New Word Pair</h2>
         <form id="add-form">
             <div>
-                <label for="source_word">Source Word:</label>
-                <input type="text" id="source_word" name="source_word" required>
+                <label for="add_source_word">Source Word:</label>
+                <input type="text" id="add_source_word" name="source_word" required>
             </div>
             <div>
-                <label for="target_word">Target Word:</label>
-                <input type="text" id="target_word" name="target_word" required>
+                <label for="add_target_word">Target Word:</label>
+                <input type="text" id="add_target_word" name="target_word" required>
             </div>
             <div>
-                <label for="category">Category:</label>
-                <select id="category" name="category" required>
+                <label for="add_category">Category:</label>
+                <select id="add_category" name="category" required>
                     <option value="" disabled selected>Select a category</option>
                     <option value="Noun">Noun</option>
                     <option value="Pronoun">Pronoun</option>
@@ -86,20 +143,69 @@
                 </select>
             </div>
             <div>
-                <label for="example_sentence">Example Sentence:</label>
-                <textarea id="example_sentence" name="example_sentence"></textarea>
+                <label for="add_example_sentence">Example Sentence:</label>
+                <textarea id="add_example_sentence" name="example_sentence"></textarea>
             </div>
             <button type="submit">Save Word Pair</button>
         </form>
-        <div id="form-feedback"></div>
+        <div id="add-form-feedback" class="form-feedback"></div>
     </div>
+
+    <!-- Edit Word Pair Modal (Ticket 3) -->
+    <div id="edit-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Edit Word Pair</h2>
+        <form id="edit-form" class="form-container">
+            <input type="hidden" id="edit_id" name="id">
+            <div>
+                <label for="edit_source_word">Source Word:</label>
+                <input type="text" id="edit_source_word" name="source_word" required>
+            </div>
+            <div>
+                <label for="edit_target_word">Target Word:</label>
+                <input type="text" id="edit_target_word" name="target_word" required>
+            </div>
+            <div>
+                <label for="edit_category">Category:</label>
+                 <select id="edit_category" name="category" required>
+                    <option value="" disabled>Select a category</option>
+                    <option value="Noun">Noun</option>
+                    <option value="Pronoun">Pronoun</option>
+                    <option value="Verb">Verb</option>
+                    <option value="Adjective">Adjective</option>
+                    <option value="Adverb">Adverb</option>
+                    <option value="Preposition">Preposition</option>
+                    <option value="Conjunction">Conjunction</option>
+                    <option value="Interjection">Interjection</option>
+                    <option value="Phrase">Phrase</option>
+                    <option value="Sentence">Sentence</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div>
+                <label for="edit_example_sentence">Example Sentence:</label>
+                <textarea id="edit_example_sentence" name="example_sentence"></textarea>
+            </div>
+            <button type="submit">Save Changes</button>
+            <button type="button" id="cancel-edit-btn">Cancel</button> <!-- Added Cancel button -->
+        </form>
+        <div id="edit-form-feedback" class="form-feedback"></div>
+      </div>
+    </div>
+
 
     <!-- Include JavaScript -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const tableBody = document.getElementById('word-pair-table-body');
             const addForm = document.getElementById('add-form');
-            const formFeedback = document.getElementById('form-feedback');
+            const addFormFeedback = document.getElementById('add-form-feedback');
+            const editModal = document.getElementById('edit-modal');
+            const editForm = document.getElementById('edit-form');
+            const editFormFeedback = document.getElementById('edit-form-feedback');
+            const closeModalBtn = editModal.querySelector('.close-btn');
+            const cancelEditBtn = document.getElementById('cancel-edit-btn');
 
             function escapeHtml(unsafe) {
                 if (typeof unsafe !== 'string') {
@@ -116,13 +222,13 @@
                          .replace(/'/g, "&#039;");
             }
 
-            function displayFeedback(message, type) {
-                formFeedback.textContent = message;
-                formFeedback.className = '';
-                formFeedback.classList.add(type);
-                formFeedback.style.display = 'block';
+            function displayFeedback(element, message, type) {
+                element.textContent = message;
+                element.className = 'form-feedback'; // Reset classes first
+                element.classList.add(type);
+                element.style.display = 'block';
                 setTimeout(() => {
-                    formFeedback.style.display = 'none';
+                    element.style.display = 'none';
                 }, 5000);
             }
 
@@ -140,15 +246,15 @@
 
                 wordPairs.forEach(pair => {
                     const row = tableBody.insertRow();
-                    row.dataset.id = pair.id;
+                    row.dataset.id = pair._id;
                     row.innerHTML = `
                         <td>${escapeHtml(pair.source_word)}</td>
                         <td>${escapeHtml(pair.target_word)}</td>
                         <td>${escapeHtml(pair.category)}</td>
                         <td>${escapeHtml(pair.example_sentence)}</td>
                         <td class="actions">
-                            <button disabled>Edit</button>
-                            <button disabled>Delete</button>
+                            <button class="edit-btn" data-id="${pair._id}">Edit</button>
+                            <button class="delete-btn" data-id="${pair._id}" disabled>Delete</button>
                         </td>
                     `;
                 });
@@ -184,15 +290,34 @@
                     });
             }
 
+            function openEditModal() {
+                editFormFeedback.style.display = 'none';
+                editModal.style.display = 'block';
+            }
+
+            function closeEditModal() {
+                editModal.style.display = 'none';
+                editForm.reset();
+                editFormFeedback.style.display = 'none';
+            }
+
+            closeModalBtn.onclick = closeEditModal;
+            cancelEditBtn.onclick = closeEditModal;
+            window.onclick = function(event) {
+              if (event.target == editModal) {
+                closeEditModal();
+              }
+            }
+
             addForm.addEventListener('submit', function(event) {
                 event.preventDefault();
-                formFeedback.style.display = 'none';
+                addFormFeedback.style.display = 'none';
 
                 const formData = new FormData(addForm);
                 const data = Object.fromEntries(formData.entries());
 
                 if (!data.source_word || !data.target_word || !data.category) {
-                    displayFeedback('Please fill out Source Word, Target Word, and Category.', 'error');
+                    displayFeedback(addFormFeedback, 'Please fill out Source Word, Target Word, and Category.', 'error');
                     return;
                 }
 
@@ -205,13 +330,13 @@
                     body: JSON.stringify(data)
                 })
                 .then(response => {
-                    if (!response.ok) {
+                     if (!response.ok) {
                          return response.json().then(err => {
                             throw new Error(err.detail || `Failed to save word pair. Status: ${response.status}`);
                          }).catch(() => {
                             throw new Error(`Failed to save word pair. Status: ${response.status}`);
                          });
-                    }
+                     }
                      const contentType = response.headers.get("content-type");
                      if (contentType && contentType.indexOf("application/json") !== -1) {
                          return response.json();
@@ -220,14 +345,102 @@
                      }
                 })
                 .then(newPairOrNull => {
-                    displayFeedback('Word pair saved successfully!', 'success');
+                    displayFeedback(addFormFeedback, 'Word pair saved successfully!', 'success');
                     addForm.reset();
                     fetchAndDisplayWordPairs();
                 })
                 .catch(error => {
                     console.error('Error saving word pair:', error);
-                    displayFeedback(`Error: ${error.message}`, 'error');
+                    displayFeedback(addFormFeedback, `Error: ${error.message}`, 'error');
                 });
+            });
+
+            editForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                editFormFeedback.style.display = 'none';
+
+                const formData = new FormData(editForm);
+                const data = Object.fromEntries(formData.entries());
+                const wordPairId = data.id;
+
+                if (!wordPairId) {
+                     displayFeedback(editFormFeedback, 'Error: Could not identify the word pair to update.', 'error');
+                     return;
+                }
+
+                if (!data.source_word || !data.target_word || !data.category) {
+                    displayFeedback(editFormFeedback, 'Please fill out Source Word, Target Word, and Category.', 'error');
+                    return;
+                }
+
+                const updateData = {
+                    source_word: data.source_word,
+                    target_word: data.target_word,
+                    category: data.category,
+                    example_sentence: data.example_sentence
+                };
+
+                fetch(`/word-pairs/${wordPairId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(updateData)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(err => {
+                            throw new Error(err.detail || `Failed to update word pair. Status: ${response.status}`);
+                        }).catch(() => {
+                            throw new Error(`Failed to update word pair. Status: ${response.status}`);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(updatedPair => {
+                    displayFeedback(editFormFeedback, 'Word pair updated successfully!', 'success');
+                    closeEditModal();
+                    fetchAndDisplayWordPairs();
+                })
+                .catch(error => {
+                    console.error('Error updating word pair:', error);
+                    displayFeedback(editFormFeedback, `Update Error: ${error.message}`, 'error');
+                });
+            });
+
+            tableBody.addEventListener('click', function(event) {
+                if (event.target.classList.contains('edit-btn')) {
+                    const button = event.target;
+                    const wordPairId = button.dataset.id;
+
+                    if (!wordPairId) {
+                        console.error("Edit button clicked but no ID found.");
+                        displayFeedback(addFormFeedback, 'Could not find word pair ID to edit.', 'error');
+                        return;
+                    }
+
+                    fetch(`/word-pairs/${wordPairId}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                return response.json().then(err => { throw new Error(err.detail || `HTTP error! Status: ${response.status}`); });
+                            }
+                            return response.json();
+                        })
+                        .then(pair => {
+                            document.getElementById('edit_id').value = pair._id;
+                            document.getElementById('edit_source_word').value = pair.source_word;
+                            document.getElementById('edit_target_word').value = pair.target_word;
+                            document.getElementById('edit_category').value = pair.category || '';
+                            document.getElementById('edit_example_sentence').value = pair.example_sentence || '';
+
+                            openEditModal();
+                        })
+                        .catch(error => {
+                            console.error('Error fetching word pair for edit:', error);
+                            displayFeedback(addFormFeedback, `Error loading data for edit: ${error.message}`, 'error');
+                        });
+                }
             });
 
             fetchAndDisplayWordPairs();
