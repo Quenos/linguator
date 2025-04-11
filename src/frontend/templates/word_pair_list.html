@@ -278,6 +278,11 @@
                         return response.json();
                     })
                     .then(data => {
+                        // Log a sample word pair to see its structure
+                        if (data.length > 0) {
+                            console.log('Sample word pair:', data[0]);
+                        }
+                        
                         // Filter data based on search term and category
                         const filteredData = data.filter(pair => {
                             const matchesSearch = !searchTerm || pair.source_word.toLowerCase().includes(searchTerm) || pair.target_word.toLowerCase().includes(searchTerm);
@@ -302,7 +307,12 @@
 
                 wordPairs.forEach(pair => {
                     const row = document.createElement('tr');
-                    row.setAttribute('data-id', pair.id);
+                    // MongoDB _id is mapped to id field in the Pydantic model
+                    // Make sure we have a valid ID field for operations
+                    const itemId = pair.id || pair._id;
+                    console.log('Word pair ID:', itemId);
+                    row.setAttribute('data-id', itemId);
+                    
                     // Use the translated category value
                     const translatedCategory = categoryTranslations[pair.category] || pair.category;
                     row.innerHTML = `
@@ -318,7 +328,8 @@
 
                     // Add event listeners for edit/delete buttons
                     row.querySelector('.edit-btn').addEventListener('click', () => openEditModal(pair));
-                    row.querySelector('.delete-btn').addEventListener('click', () => deleteWordPair(pair.id));
+                    // Pass the itemId consistently
+                    row.querySelector('.delete-btn').addEventListener('click', () => deleteWordPair(itemId));
 
                     tableBody.appendChild(row);
                 });
@@ -372,8 +383,10 @@
             // --- Edit Modal Handling ---
 
             function openEditModal(pair) {
+                // Make sure we have a valid ID field
+                const itemId = pair.id || pair._id;
                 // Populate the form
-                document.getElementById('edit_id').value = pair.id;
+                document.getElementById('edit_id').value = itemId;
                 document.getElementById('edit_source_word').value = pair.source_word;
                 document.getElementById('edit_target_word').value = pair.target_word;
                 document.getElementById('edit_category').value = pair.category;
@@ -442,6 +455,15 @@
             // --- Delete Handling ---
 
             function deleteWordPair(pairId) {
+                // Add debug logging
+                console.log('Deleting word pair with ID:', pairId);
+                
+                if (!pairId) {
+                    console.error('Error: Attempted to delete a word pair with undefined ID');
+                    alert('{{ _("Cannot delete: The word pair ID is missing.") }}');
+                    return;
+                }
+                
                 if (!confirm(msgConfirmDelete)) {
                     return;
                 }
@@ -451,22 +473,22 @@
                 })
                 .then(response => {
                     if (!response.ok) {
-                         // Check if the response has content before trying to parse JSON
-                         const contentType = response.headers.get("content-type");
-                         if (contentType && contentType.indexOf("application/json") !== -1) {
-                             return response.json().then(err => {
-                                 const message = err.detail || msgErrorDeletingWordPair;
-                                 throw new Error(message);
-                             });
-                         } else {
-                             // If not JSON, throw a generic error with status text
-                             throw new Error(`${msgErrorDeleting} ${response.statusText}`);
-                         }
+                        // Check if the response has content before trying to parse JSON
+                        const contentType = response.headers.get("content-type");
+                        if (contentType && contentType.indexOf("application/json") !== -1) {
+                            return response.json().then(err => {
+                                const message = err.detail || msgErrorDeletingWordPair;
+                                throw new Error(message);
+                            });
+                        } else {
+                            // If not JSON, throw a generic error with status text
+                            throw new Error(`${msgErrorDeleting} ${response.statusText}`);
+                        }
                     }
-                     // Check for potential no-content success (204)
-                     if (response.status === 204) {
-                         return; // No content to parse, but successful
-                     }
+                    // Check for potential no-content success (204)
+                    if (response.status === 204) {
+                        return; // No content to parse, but successful
+                    }
                     // If other successful status with content, parse it (though DELETE usually returns 204)
                     return response.json();
                 })
