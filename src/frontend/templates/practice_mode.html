@@ -9,14 +9,63 @@
         body { font-family: sans-serif; padding: 20px; }
         #practice-area { margin-top: 20px; border: 1px solid #ccc; padding: 15px; min-height: 150px; }
         #flashcard { padding: 10px; border: 1px dashed #eee; margin-top: 10px; }
+
+        /* Navigation Button Styles (copied from word_pair_list.html) */
+        .nav-links {
+            margin-bottom: 20px; /* Use margin-bottom like word_pair_list */
+            display: flex; /* Align buttons nicely */
+            gap: 10px; /* Space between buttons */
+        }
+        .nav-button {
+            display: inline-block; /* Allows padding and margins */
+            padding: 8px 15px;
+            background-color: #007bff; /* Example blue */
+            color: white !important; /* Ensure text color is white */
+            text-decoration: none; /* Remove underline */
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s; /* Smooth hover effect */
+            font-size: 1em; /* Match default text size */
+        }
+        .nav-button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+            color: white !important; /* Ensure text color stays white */
+            text-decoration: none;
+        }
+
+        /* Specific style for the start button */
+        .start-button {
+            /* Inherit base styles from nav-button if desired, or define explicitly */
+            display: inline-block; /* Allows padding and margins */
+            padding: 8px 15px;
+            background-color: #28a745; /* Green */
+            color: white !important; /* Ensure text color is white */
+            text-decoration: none; /* Remove underline */
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s; /* Smooth hover effect */
+            font-size: 1em; /* Match default text size */
+            margin-bottom: 20px; /* Add some space below */
+        }
+        .start-button:hover {
+             background-color: #218838; /* Darker green */
+        }
     </style>
 </head>
 <body>
 
 <h1>Practice Mode</h1>
 
+<!-- Add navigation links -->
+<div class="nav-links">
+    <a href="/ui/word-pairs" class="nav-button">Word Pairs List</a>
+    <a href="/ui/progress" class="nav-button">View Progress</a>
+</div>
+
 <!-- Button to start the practice session -->
-<button id="start-practice-btn">
+<button id="start-practice-btn" class="start-button">
     Start Practice (10 words)
 </button>
 
@@ -80,7 +129,7 @@
                     <!-- Answer will be revealed here -->
                 </div>
                 <div id="feedback-area">
-                     <button id="show-answer-btn">Show Answer</button>
+                     <button id="show-answer-btn" class="start-button">Show Answer</button>
                 </div>
                 <!-- Placeholder for navigation (Ticket 4) -->
                 <!-- <button>Next</button> -->

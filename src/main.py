@@ -93,6 +93,11 @@ async def practice_mode_page(request: Request):
     # The actual practice content is loaded via client-side JS now
     return templates.TemplateResponse("practice_mode.html", {"request": request})
 
+@app.get("/ui/progress", response_class=HTMLResponse)
+async def progress_tracking_page(request: Request):
+    """Serves the Progress Tracking UI page."""
+    return templates.TemplateResponse("progress_tracking.html", {"request": request})
+
 # --- End UI Routes ---
 
 # Add a simple health check endpoint
