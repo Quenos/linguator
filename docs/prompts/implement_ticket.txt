@@ -1,3 +1,3 @@
-please implement ticket 2 from epic 5. code can be found in src/ and its sub-folders.
+please implement ticket 3 from epic 5. code can be found in src/ and its sub-folders.
 Only create new files if really needed.
 All functionality needed should be there already, and if it isn't we'll fix that afterwards.

@@ -68,13 +68,15 @@
             {% endblock %}
         </main>
         <footer>
-            <p>&copy; 2024 Linguator</p>
+            <p>&copy; 2024 {{ _('Linguator') }}</p>
         </footer>
     </div> {# End container #}
 
     {# Add links to JS files if you have them, e.g., in static/js #}
     {# <script src="{{ url_for('static', path='/js/main.js') }}"></script> #}
     <script>
+        // Pre-translate strings using Jinja for use in JS
+        
         document.addEventListener('DOMContentLoaded', (event) => {
             const langSelect = document.getElementById('lang-select');
             const currentHtmlLang = document.documentElement.lang || 'en'; // Default to 'en' if not set

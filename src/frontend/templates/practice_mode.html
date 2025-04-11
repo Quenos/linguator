@@ -34,6 +34,10 @@
     const msgTargetWord = "{{ _('Target Word:') }}";
     const msgShowAnswer = "{{ _('Show Answer') }}";
     const msgDidYouKnow = "{{ _('Did you know the answer?') }}";
+    const msgErrorSavingResult = "{{ _('Error saving practice result:') }}";
+    const msgHttpError = "{{ _('HTTP error! Status:') }}";
+    const msgCannotRecordFeedback = "{{ _('Cannot record feedback: currentWordPair or its ID is missing.') }}";
+    const msgUnknownError = "{{ _('Unknown error') }}";
 
     let currentPracticePairs = [];
     let currentQuestionIndex = -1;
@@ -50,7 +54,7 @@
             const response = await fetch('/practice-session/'); 
             if (!response.ok) {
                 // Try to get error detail from response body if possible
-                let errorDetail = `HTTP error! status: ${response.status}`;
+                let errorDetail = `${msgHttpError} ${response.status}`;
                 try {
                     const errorJson = await response.json();
                     errorDetail = errorJson.detail || errorDetail;
@@ -69,7 +73,7 @@
         } catch (error) {
             console.error('Error fetching practice pairs:', error);
             // Use the pre-translated string and JS string replacement
-            const errorMessage = escapeHTML(error.message || 'Unknown error'); // Ensure message exists and escape it
+            const errorMessage = escapeHTML(error.message || msgUnknownError); // Ensure message exists and escape it
             const fullErrorMessage = msgErrorLoading.replace('%(error_message)s', errorMessage);
             practiceArea.innerHTML = `<p style=\"color: red;\">${fullErrorMessage}</p>`; // Display the formatted message
         }
@@ -146,10 +150,10 @@
                 if (!response.ok) {
                     // Attempt to read error detail from response
                     return response.json().then(err => {
-                        throw new Error(err.detail || `HTTP error! Status: ${response.status}`);
+                        throw new Error(err.detail || `${msgHttpError} ${response.status}`);
                     }).catch(() => {
                         // Fallback if response is not JSON or has no detail
-                        throw new Error(`HTTP error! Status: ${response.status}`);
+                        throw new Error(`${msgHttpError} ${response.status}`);
                     });
                 }
                 return response.json(); // Or handle success response if needed
@@ -158,12 +162,12 @@
                 console.log('Practice result saved:', data);
             })
             .catch(error => {
-                console.error('Error saving practice result:', error);
+                console.error(`${msgErrorSavingResult} ${error}`);
                 // Optionally, display a user-facing error message in the UI
                 // feedbackArea.innerHTML += `<p style="color: red; font-size: small;">Error saving result: ${escapeHTML(error.message)}</p>`;
             });
         } else {
-            console.error('Cannot record feedback: currentWordPair or its ID is missing.');
+            console.error(msgCannotRecordFeedback);
         }
         // --- End: Epic 4, Ticket 2 Implementation ---
 
