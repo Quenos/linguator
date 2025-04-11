@@ -11,6 +11,10 @@
         .stat-label { font-weight: bold; }
         #loading-state { color: #888; }
         #error-state { color: red; display: none; }
+        #reset-container { margin-top: 20px; }
+        #reset-button { background-color: #dc3545; }
+        #reset-button:hover { background-color: #c82333; }
+        #reset-confirmation { display: none; margin-top: 10px; padding: 10px; background-color: #f8d7da; border: 1px solid #f5c6cb; border-radius: 4px; }
     </style>
 {% endblock %}
 
@@ -31,37 +35,103 @@
         </div>
     </div>
 
+    <!-- Add Reset Progress Button Container -->
+    <div id="reset-container">
+        <button id="reset-button">{{ _('Reset Progress Data') }}</button>
+        <div id="reset-confirmation">{{ _('Progress data has been reset successfully!') }}</div>
+    </div>
+
     <!-- Specific JS for this page -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        // Pre-translate strings using Jinja for use in JS
+        const msgHttpError = "{{ _('HTTP error! status:') }}";
+        const msgErrorFetchingStats = "{{ _('Error fetching progress stats:') }}";
+        const msgResetError = "{{ _('Error resetting progress data:') }}";
+        const msgConfirmReset = "{{ _('Are you sure you want to reset all progress data? This action cannot be undone.') }}";
+
+        // Function to load statistics
+        function loadStats() {
             const loadingState = document.getElementById('loading-state');
             const errorState = document.getElementById('error-state');
             const statsContent = document.getElementById('stats-content');
             const totalWordsSpan = document.getElementById('total-words');
             const accuracySpan = document.getElementById('accuracy');
+            
+            loadingState.style.display = 'block';
+            errorState.style.display = 'none';
+            statsContent.style.display = 'none';
 
             fetch('/progress/stats')
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
+                        throw new Error(`${msgHttpError} ${response.status}`);
                     }
                     return response.json();
                 })
                 .then(data => {
                     totalWordsSpan.textContent = data.total_unique_words_practiced;
-                    // Format accuracy to 1 decimal place
-                    accuracySpan.textContent = parseFloat(data.overall_accuracy_percentage).toFixed(1);
+                    
+                    // Check if accuracy is null (no attempts yet)
+                    if (data.overall_accuracy_percentage === null) {
+                        accuracySpan.textContent = '--';
+                    } else {
+                        // Format accuracy to 1 decimal place
+                        accuracySpan.textContent = parseFloat(data.overall_accuracy_percentage).toFixed(1);
+                    }
 
                     loadingState.style.display = 'none';
                     errorState.style.display = 'none';
                     statsContent.style.display = 'block';
                 })
                 .catch(error => {
-                    console.error('Error fetching progress stats:', error);
+                    console.error(`${msgErrorFetchingStats} ${error}`);
                     loadingState.style.display = 'none';
                     statsContent.style.display = 'none';
                     errorState.style.display = 'block';
                 });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initial load of statistics
+            loadStats();
+
+            // Reset button functionality
+            const resetButton = document.getElementById('reset-button');
+            const resetConfirmation = document.getElementById('reset-confirmation');
+
+            resetButton.addEventListener('click', function() {
+                // Ask for confirmation before resetting
+                if (confirm(msgConfirmReset)) {
+                    // Make DELETE request to reset endpoint
+                    fetch('/progress/reset', {
+                        method: 'DELETE',
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`${msgHttpError} ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Reset successful:', data);
+                        
+                        // Show confirmation message
+                        resetConfirmation.style.display = 'block';
+                        
+                        // Hide confirmation after 3 seconds
+                        setTimeout(() => {
+                            resetConfirmation.style.display = 'none';
+                        }, 3000);
+                        
+                        // Reload stats to show updated values
+                        loadStats();
+                    })
+                    .catch(error => {
+                        console.error(`${msgResetError} ${error}`);
+                        alert(`${msgResetError} ${error.message}`);
+                    });
+                }
+            });
         });
     </script>
 

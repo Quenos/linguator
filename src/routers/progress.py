@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 from typing import Optional
 # Import the database function
-from ..database import calculate_progress_stats, get_database # Assuming calculate_progress_stats is in database.py
+from ..database import calculate_progress_stats, reset_progress_data, get_database # Added reset_progress_data import
 import logging
 
 logger = logging.getLogger(__name__)
@@ -34,4 +34,20 @@ async def get_progress_stats():
     except Exception as e:
         logger.error(f"Failed to get progress stats: {e}")
         # Re-raise as an HTTPException to provide a proper API error response
-        raise HTTPException(status_code=500, detail="Failed to calculate progress statistics") 
+        raise HTTPException(status_code=500, detail="Failed to calculate progress statistics")
+
+# Define the response model for the reset operation
+class ResetProgressResponse(BaseModel):
+    deleted_count: int = Field(..., description="Number of deleted practice records")
+    status: str = Field(..., description="Status of the operation")
+    message: str = Field(..., description="Detailed message about the operation")
+
+@router.delete("/reset", response_model=ResetProgressResponse)
+async def reset_progress():
+    """Resets all progress data by deleting all practice results."""
+    try:
+        result = await reset_progress_data()
+        return ResetProgressResponse(**result)
+    except Exception as e:
+        logger.error(f"Failed to reset progress data: {e}")
+        raise HTTPException(status_code=500, detail="Failed to reset progress data") 

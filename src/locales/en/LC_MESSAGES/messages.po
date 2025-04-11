@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-04-11 12:56+0200\n"
+"POT-Creation-Date: 2025-04-11 22:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,199 +18,393 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: src/frontend/templates/progress_tracking.html:6
-#: src/frontend/templates/progress_tracking.html:42
-msgid "Progress Tracking"
-msgstr "Progress Tracking"
+#: src/frontend/templates/base.html:5 src/frontend/templates/base.html:71
+msgid "Linguator"
+msgstr ""
 
-#: src/frontend/templates/progress_tracking.html:44
-msgid "Loading statistics..."
-msgstr "Loading statistics..."
-
-#: src/frontend/templates/progress_tracking.html:45
-msgid "Failed to load statistics. Please try again later."
-msgstr "Failed to load statistics. Please try again later."
-
-#: src/frontend/templates/progress_tracking.html:49
-msgid "Total Unique Words Practiced:"
-msgstr "Total Unique Words Practiced:"
-
-#: src/frontend/templates/progress_tracking.html:53
-msgid "Overall Accuracy:"
-msgstr "Overall Accuracy:"
-
-#: src/frontend/templates/progress_tracking.html:93
-msgid "Back to Word Pairs"
-msgstr "Back to Word Pairs"
-
-#: src/frontend/templates/progress_tracking.html:94
-msgid "Go To Practice"
-msgstr "Go To Practice"
-
-#: src/frontend/templates/word_pair_list.html:6
-msgid "Word Pair List"
-msgstr "Word Pair List"
-
-#: src/frontend/templates/word_pair_list.html:116
+#: src/frontend/templates/base.html:52
+#: src/frontend/templates/word_pair_list.html:90
 msgid "Word Pairs"
 msgstr "Word Pairs"
 
-#: src/frontend/templates/word_pair_list.html:120
-#: src/frontend/templates/practice_mode.html:65
+#: src/frontend/templates/base.html:53
+#, fuzzy
+msgid "Practice"
+msgstr "Practice Mode"
+
+#: src/frontend/templates/base.html:54
+#, fuzzy
+msgid "Progress"
+msgstr "View Progress"
+
+#: src/frontend/templates/base.html:57
+msgid "Language"
+msgstr ""
+
+#: src/frontend/templates/base.html:59
+msgid "English"
+msgstr "English"
+
+#: src/frontend/templates/base.html:60
+msgid "Italian"
+msgstr "Italiano"
+
+#: src/frontend/templates/base.html:61
+msgid "Russian"
+msgstr "Русский"
+
+#: src/frontend/templates/practice_mode.html:3
+#: src/frontend/templates/practice_mode.html:8
 msgid "Practice Mode"
 msgstr "Practice Mode"
 
-#: src/frontend/templates/word_pair_list.html:121
-#: src/frontend/templates/practice_mode.html:66
-msgid "View Progress"
-msgstr "View Progress"
+#: src/frontend/templates/practice_mode.html:9
+#, fuzzy
+msgid "Review your word pairs."
+msgstr "Save Word Pair"
 
-#: src/frontend/templates/word_pair_list.html:126
-msgid "Search by source or target word..."
-msgstr "Search by source or target word..."
+#: src/frontend/templates/practice_mode.html:12
+msgid "Start Practice Session"
+msgstr ""
 
-#: src/frontend/templates/word_pair_list.html:128
-msgid "All Categories"
-msgstr "All Categories"
+#: src/frontend/templates/practice_mode.html:20
+#, python-format
+msgid "Marked as %(status)s."
+msgstr ""
 
-#: src/frontend/templates/word_pair_list.html:129
-#: src/frontend/templates/word_pair_list.html:176
-#: src/frontend/templates/word_pair_list.html:217
-msgid "Noun"
-msgstr "Noun"
+#: src/frontend/templates/practice_mode.html:21
+msgid "Correct"
+msgstr ""
 
-#: src/frontend/templates/word_pair_list.html:130
-#: src/frontend/templates/word_pair_list.html:177
-#: src/frontend/templates/word_pair_list.html:218
-msgid "Pronoun"
-msgstr "Pronoun"
+#: src/frontend/templates/practice_mode.html:22
+msgid "Incorrect"
+msgstr ""
 
-#: src/frontend/templates/word_pair_list.html:131
-#: src/frontend/templates/word_pair_list.html:178
-#: src/frontend/templates/word_pair_list.html:219
-msgid "Verb"
-msgstr "Verb"
+#: src/frontend/templates/practice_mode.html:23
+msgid "Next Question"
+msgstr ""
 
-#: src/frontend/templates/word_pair_list.html:132
-#: src/frontend/templates/word_pair_list.html:179
-#: src/frontend/templates/word_pair_list.html:220
-msgid "Adjective"
-msgstr "Adjective"
+#: src/frontend/templates/practice_mode.html:24
+msgid "Finish Session"
+msgstr ""
 
-#: src/frontend/templates/word_pair_list.html:133
-#: src/frontend/templates/word_pair_list.html:180
-#: src/frontend/templates/word_pair_list.html:221
-msgid "Adverb"
-msgstr "Adverb"
+#: src/frontend/templates/practice_mode.html:25
+msgid "Session Complete!"
+msgstr ""
 
-#: src/frontend/templates/word_pair_list.html:134
-#: src/frontend/templates/word_pair_list.html:181
-#: src/frontend/templates/word_pair_list.html:222
-msgid "Preposition"
-msgstr "Preposition"
+#: src/frontend/templates/practice_mode.html:26
+#, python-format
+msgid "You have reviewed all %(count)s word pairs."
+msgstr ""
 
+#: src/frontend/templates/practice_mode.html:27
+#, fuzzy
+msgid "Practice Again"
+msgstr "Practice Mode"
+
+#: src/frontend/templates/practice_mode.html:28
+#, fuzzy
+msgid "Loading questions..."
+msgstr "Loading statistics..."
+
+#: src/frontend/templates/practice_mode.html:29
+msgid "No word pairs found to practice."
+msgstr ""
+
+#: src/frontend/templates/practice_mode.html:30
+#, python-format
+msgid "Error loading questions: %(error_message)s. Please try again."
+msgstr ""
+
+#: src/frontend/templates/practice_mode.html:31
+msgid "Invalid question index."
+msgstr ""
+
+#: src/frontend/templates/practice_mode.html:32
+#, python-format
+msgid "Flashcard (%(current)s / %(total)s)"
+msgstr ""
+
+#: src/frontend/templates/practice_mode.html:33
 #: src/frontend/templates/word_pair_list.html:135
-#: src/frontend/templates/word_pair_list.html:182
-#: src/frontend/templates/word_pair_list.html:223
-msgid "Conjunction"
-msgstr "Conjunction"
-
-#: src/frontend/templates/word_pair_list.html:136
-#: src/frontend/templates/word_pair_list.html:183
-#: src/frontend/templates/word_pair_list.html:224
-msgid "Interjection"
-msgstr "Interjection"
-
-#: src/frontend/templates/word_pair_list.html:137
-#: src/frontend/templates/word_pair_list.html:184
-#: src/frontend/templates/word_pair_list.html:225
-msgid "Phrase"
-msgstr "Phrase"
-
-#: src/frontend/templates/word_pair_list.html:138
-#: src/frontend/templates/word_pair_list.html:185
-#: src/frontend/templates/word_pair_list.html:226
-msgid "Sentence"
-msgstr "Sentence"
-
-#: src/frontend/templates/word_pair_list.html:139
-#: src/frontend/templates/word_pair_list.html:186
-#: src/frontend/templates/word_pair_list.html:227
-msgid "Other"
-msgstr "Other"
-
-#: src/frontend/templates/word_pair_list.html:147
-msgid "Source Word"
-msgstr "Source Word"
-
-#: src/frontend/templates/word_pair_list.html:148
-msgid "Target Word"
-msgstr "Target Word"
-
-#: src/frontend/templates/word_pair_list.html:149
-msgid "Category"
-msgstr "Category"
-
-#: src/frontend/templates/word_pair_list.html:150
-msgid "Example Sentence"
-msgstr "Example Sentence"
-
-#: src/frontend/templates/word_pair_list.html:151
-msgid "Actions"
-msgstr "Actions"
-
-#: src/frontend/templates/word_pair_list.html:156
-msgid "Loading word pairs..."
-msgstr "Loading word pairs..."
-
-#: src/frontend/templates/word_pair_list.html:162
-msgid "Add New Word Pair"
-msgstr "Add New Word Pair"
-
-#: src/frontend/templates/word_pair_list.html:165
-#: src/frontend/templates/word_pair_list.html:206
-#: src/frontend/templates/practice_mode.html:117
+#: src/frontend/templates/word_pair_list.html:176
 msgid "Source Word:"
 msgstr "Source Word:"
 
-#: src/frontend/templates/word_pair_list.html:169
-#: src/frontend/templates/word_pair_list.html:210
-#: src/frontend/templates/practice_mode.html:143
+#: src/frontend/templates/practice_mode.html:34
+#: src/frontend/templates/word_pair_list.html:139
+#: src/frontend/templates/word_pair_list.html:180
 msgid "Target Word:"
 msgstr "Target Word:"
 
-#: src/frontend/templates/word_pair_list.html:173
-#: src/frontend/templates/word_pair_list.html:214
+#: src/frontend/templates/practice_mode.html:35
+msgid "Show Answer"
+msgstr ""
+
+#: src/frontend/templates/practice_mode.html:36
+msgid "Did you know the answer?"
+msgstr ""
+
+#: src/frontend/templates/practice_mode.html:37
+msgid "Error saving practice result:"
+msgstr ""
+
+#: src/frontend/templates/practice_mode.html:38
+msgid "HTTP error! Status:"
+msgstr ""
+
+#: src/frontend/templates/practice_mode.html:39
+msgid "Cannot record feedback: currentWordPair or its ID is missing."
+msgstr ""
+
+#: src/frontend/templates/practice_mode.html:40
+msgid "Unknown error"
+msgstr ""
+
+#: src/frontend/templates/progress_tracking.html:3
+#: src/frontend/templates/progress_tracking.html:22
+msgid "Progress Tracking"
+msgstr "Progress Tracking"
+
+#: src/frontend/templates/progress_tracking.html:24
+msgid "Loading statistics..."
+msgstr "Loading statistics..."
+
+#: src/frontend/templates/progress_tracking.html:25
+msgid "Failed to load statistics. Please try again later."
+msgstr "Failed to load statistics. Please try again later."
+
+#: src/frontend/templates/progress_tracking.html:29
+msgid "Total Unique Words Practiced:"
+msgstr "Total Unique Words Practiced:"
+
+#: src/frontend/templates/progress_tracking.html:33
+msgid "Overall Accuracy:"
+msgstr "Overall Accuracy:"
+
+#: src/frontend/templates/progress_tracking.html:39
+msgid "Reset Progress Data"
+msgstr "Reset Progress Data"
+
+#: src/frontend/templates/progress_tracking.html:40
+msgid "Progress data has been reset successfully!"
+msgstr "Progress data has been reset successfully!"
+
+#: src/frontend/templates/progress_tracking.html:47
+msgid "HTTP error! status:"
+msgstr ""
+
+#: src/frontend/templates/progress_tracking.html:48
+msgid "Error fetching progress stats:"
+msgstr ""
+
+#: src/frontend/templates/progress_tracking.html:49
+msgid "Error resetting progress data:"
+msgstr "Error resetting progress data:"
+
+#: src/frontend/templates/progress_tracking.html:50
+msgid ""
+"Are you sure you want to reset all progress data? This action cannot be "
+"undone."
+msgstr "Are you sure you want to reset all progress data? This action cannot be undone."
+
+#: src/frontend/templates/word_pair_list.html:3
+msgid "Word Pair List"
+msgstr "Word Pair List"
+
+#: src/frontend/templates/word_pair_list.html:96
+msgid "Search by source or target word..."
+msgstr "Search by source or target word..."
+
+#: src/frontend/templates/word_pair_list.html:98
+msgid "All Categories"
+msgstr "All Categories"
+
+#: src/frontend/templates/word_pair_list.html:99
+#: src/frontend/templates/word_pair_list.html:146
+#: src/frontend/templates/word_pair_list.html:187
+msgid "Noun"
+msgstr "Noun"
+
+#: src/frontend/templates/word_pair_list.html:100
+#: src/frontend/templates/word_pair_list.html:147
+#: src/frontend/templates/word_pair_list.html:188
+msgid "Pronoun"
+msgstr "Pronoun"
+
+#: src/frontend/templates/word_pair_list.html:101
+#: src/frontend/templates/word_pair_list.html:148
+#: src/frontend/templates/word_pair_list.html:189
+msgid "Verb"
+msgstr "Verb"
+
+#: src/frontend/templates/word_pair_list.html:102
+#: src/frontend/templates/word_pair_list.html:149
+#: src/frontend/templates/word_pair_list.html:190
+msgid "Adjective"
+msgstr "Adjective"
+
+#: src/frontend/templates/word_pair_list.html:103
+#: src/frontend/templates/word_pair_list.html:150
+#: src/frontend/templates/word_pair_list.html:191
+msgid "Adverb"
+msgstr "Adverb"
+
+#: src/frontend/templates/word_pair_list.html:104
+#: src/frontend/templates/word_pair_list.html:151
+#: src/frontend/templates/word_pair_list.html:192
+msgid "Preposition"
+msgstr "Preposition"
+
+#: src/frontend/templates/word_pair_list.html:105
+#: src/frontend/templates/word_pair_list.html:152
+#: src/frontend/templates/word_pair_list.html:193
+msgid "Conjunction"
+msgstr "Conjunction"
+
+#: src/frontend/templates/word_pair_list.html:106
+#: src/frontend/templates/word_pair_list.html:153
+#: src/frontend/templates/word_pair_list.html:194
+msgid "Interjection"
+msgstr "Interjection"
+
+#: src/frontend/templates/word_pair_list.html:107
+#: src/frontend/templates/word_pair_list.html:154
+#: src/frontend/templates/word_pair_list.html:195
+msgid "Phrase"
+msgstr "Phrase"
+
+#: src/frontend/templates/word_pair_list.html:108
+#: src/frontend/templates/word_pair_list.html:155
+#: src/frontend/templates/word_pair_list.html:196
+msgid "Sentence"
+msgstr "Sentence"
+
+#: src/frontend/templates/word_pair_list.html:109
+#: src/frontend/templates/word_pair_list.html:156
+#: src/frontend/templates/word_pair_list.html:197
+msgid "Other"
+msgstr "Other"
+
+#: src/frontend/templates/word_pair_list.html:117
+msgid "Source Word"
+msgstr "Source Word"
+
+#: src/frontend/templates/word_pair_list.html:118
+msgid "Target Word"
+msgstr "Target Word"
+
+#: src/frontend/templates/word_pair_list.html:119
+msgid "Category"
+msgstr "Category"
+
+#: src/frontend/templates/word_pair_list.html:120
+msgid "Example Sentence"
+msgstr "Example Sentence"
+
+#: src/frontend/templates/word_pair_list.html:121
+msgid "Actions"
+msgstr "Actions"
+
+#: src/frontend/templates/word_pair_list.html:126
+msgid "Loading word pairs..."
+msgstr "Loading word pairs..."
+
+#: src/frontend/templates/word_pair_list.html:132
+msgid "Add New Word Pair"
+msgstr "Add New Word Pair"
+
+#: src/frontend/templates/word_pair_list.html:143
+#: src/frontend/templates/word_pair_list.html:184
 msgid "Category:"
 msgstr "Category:"
 
-#: src/frontend/templates/word_pair_list.html:175
-#: src/frontend/templates/word_pair_list.html:216
-#: src/frontend/templates/word_pair_list.html:188
-#: src/frontend/templates/word_pair_list.html:231
+#: src/frontend/templates/word_pair_list.html:145
+#: src/frontend/templates/word_pair_list.html:186
 msgid "Select a category"
 msgstr "Select a category"
 
-#: src/frontend/templates/word_pair_list.html:190
-#: src/frontend/templates/word_pair_list.html:231
+#: src/frontend/templates/word_pair_list.html:160
+#: src/frontend/templates/word_pair_list.html:201
 msgid "Example Sentence:"
 msgstr "Example Sentence:"
 
-#: src/frontend/templates/word_pair_list.html:193
+#: src/frontend/templates/word_pair_list.html:163
 msgid "Save Word Pair"
 msgstr "Save Word Pair"
 
-#: src/frontend/templates/word_pair_list.html:202
+#: src/frontend/templates/word_pair_list.html:172
 msgid "Edit Word Pair"
 msgstr "Edit Word Pair"
 
-#: src/frontend/templates/word_pair_list.html:234
+#: src/frontend/templates/word_pair_list.html:204
 msgid "Save Changes"
 msgstr "Save Changes"
 
-#: src/frontend/templates/word_pair_list.html:235
+#: src/frontend/templates/word_pair_list.html:205
 msgid "Cancel"
 msgstr "Cancel"
+
+#: src/frontend/templates/word_pair_list.html:216
+#, fuzzy
+msgid "No word pairs found."
+msgstr "Word Pairs"
+
+#: src/frontend/templates/word_pair_list.html:217
+msgid "Error loading data."
+msgstr ""
+
+#: src/frontend/templates/word_pair_list.html:218
+msgid "Please fill in all required fields."
+msgstr ""
+
+#: src/frontend/templates/word_pair_list.html:219
+#, fuzzy
+msgid "Error adding word pair."
+msgstr "Loading word pairs..."
+
+#: src/frontend/templates/word_pair_list.html:220
+msgid "Error adding word pair. Invalid server response."
+msgstr ""
+
+#: src/frontend/templates/word_pair_list.html:221
+msgid "Word pair added successfully!"
+msgstr ""
+
+#: src/frontend/templates/word_pair_list.html:222
+#, fuzzy
+msgid "Error updating word pair."
+msgstr "Loading word pairs..."
+
+#: src/frontend/templates/word_pair_list.html:223
+msgid "Error updating word pair. Invalid server response."
+msgstr ""
+
+#: src/frontend/templates/word_pair_list.html:224
+msgid "Word pair updated successfully!"
+msgstr ""
+
+#: src/frontend/templates/word_pair_list.html:225
+msgid "Are you sure you want to delete this word pair?"
+msgstr ""
+
+#: src/frontend/templates/word_pair_list.html:226
+#, fuzzy
+msgid "Error deleting word pair."
+msgstr "Edit Word Pair"
+
+#: src/frontend/templates/word_pair_list.html:227
+#, fuzzy
+msgid "Error deleting word pair:"
+msgstr "Edit Word Pair"
+
+#: src/frontend/templates/word_pair_list.html:295
+msgid "Edit"
+msgstr ""
+
+#: src/frontend/templates/word_pair_list.html:296
+msgid "Delete"
+msgstr ""
 
 #: venv/lib/python3.10/site-packages/click/_termui_impl.py:556
 #, python-brace-format
@@ -509,4 +703,10 @@ msgstr[1] ""
 
 #~ msgid "Hello World"
 #~ msgstr "Hello World"
+
+#~ msgid "Back to Word Pairs"
+#~ msgstr "Back to Word Pairs"
+
+#~ msgid "Go To Practice"
+#~ msgstr "Go To Practice"
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-04-11 19:38+0200\n"
+"POT-Creation-Date: 2025-04-11 22:01+0200\n"
 "PO-Revision-Date: 2025-04-11 19:30+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: ru\n"
@@ -43,11 +43,11 @@ msgstr "Язык"
 
 #: src/frontend/templates/base.html:59
 msgid "English"
-msgstr "Английский"
+msgstr "English"
 
 #: src/frontend/templates/base.html:60
 msgid "Italian"
-msgstr "Итальянский"
+msgstr "Italiano"
 
 #: src/frontend/templates/base.html:61
 msgid "Russian"
@@ -162,33 +162,52 @@ msgid "Unknown error"
 msgstr "неизвестная ошибка"
 
 #: src/frontend/templates/progress_tracking.html:3
-#: src/frontend/templates/progress_tracking.html:18
+#: src/frontend/templates/progress_tracking.html:22
 msgid "Progress Tracking"
 msgstr "Отслеживание прогресса"
 
-#: src/frontend/templates/progress_tracking.html:20
+#: src/frontend/templates/progress_tracking.html:24
 msgid "Loading statistics..."
 msgstr "Загрузка статистики..."
 
-#: src/frontend/templates/progress_tracking.html:21
+#: src/frontend/templates/progress_tracking.html:25
 msgid "Failed to load statistics. Please try again later."
 msgstr "Не удалось загрузить статистику. Пожалуйста, попробуйте позже."
 
-#: src/frontend/templates/progress_tracking.html:25
+#: src/frontend/templates/progress_tracking.html:29
 msgid "Total Unique Words Practiced:"
 msgstr "Всего уникальных слов выучено:"
 
-#: src/frontend/templates/progress_tracking.html:29
+#: src/frontend/templates/progress_tracking.html:33
 msgid "Overall Accuracy:"
 msgstr "Общая точность:"
 
-#: src/frontend/templates/progress_tracking.html:37
+#: src/frontend/templates/progress_tracking.html:39
+msgid "Reset Progress Data"
+msgstr "Сбросить Данные о Прогрессе"
+
+#: src/frontend/templates/progress_tracking.html:40
+msgid "Progress data has been reset successfully!"
+msgstr "Данные о прогрессе успешно сброшены!"
+
+#: src/frontend/templates/progress_tracking.html:47
 msgid "HTTP error! status:"
 msgstr ""
 
-#: src/frontend/templates/progress_tracking.html:38
+#: src/frontend/templates/progress_tracking.html:48
 msgid "Error fetching progress stats:"
 msgstr ""
+
+#: src/frontend/templates/progress_tracking.html:49
+#, fuzzy
+msgid "Error resetting progress data:"
+msgstr "Ошибка при сбросе данных о прогрессе:"
+
+#: src/frontend/templates/progress_tracking.html:50
+msgid ""
+"Are you sure you want to reset all progress data? This action cannot be "
+"undone."
+msgstr "Вы уверены, что хотите сбросить все данные о прогрессе? Это действие нельзя отменить."
 
 #: src/frontend/templates/word_pair_list.html:3
 msgid "Word Pair List"

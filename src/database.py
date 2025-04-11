@@ -193,4 +193,28 @@ async def calculate_progress_stats() -> dict:
             }
     except Exception as e:
         logger.error(f"Error calculating progress stats: {e}")
-        raise # Re-raise the exception to be handled by the caller (API endpoint) 
+        raise # Re-raise the exception to be handled by the caller (API endpoint)
+
+async def reset_progress_data() -> dict:
+    """
+    Resets all progress data by deleting all records in the practice_results collection.
+    
+    Returns:
+        dict: A dictionary with the count of deleted records and status message.
+    """
+    collection = get_collection("practice_results")
+    logger.info("Resetting progress data...")
+    
+    try:
+        result = await collection.delete_many({})  # Empty filter to delete all documents
+        deleted_count = result.deleted_count
+        logger.info(f"Successfully deleted {deleted_count} practice results")
+        
+        return {
+            "deleted_count": deleted_count,
+            "status": "success",
+            "message": f"Successfully reset {deleted_count} practice records"
+        }
+    except Exception as e:
+        logger.error(f"Error resetting progress data: {e}")
+        raise  # Re-raise the exception to be handled by the caller (API endpoint) 
