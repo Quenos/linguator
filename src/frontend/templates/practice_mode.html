@@ -198,20 +198,37 @@
 
         // Provide visual feedback
         flashcardDiv.style.border = isCorrect ? '2px solid green' : '2px solid red';
+        
         // Construct feedback using pre-translated strings and JS variables
+        // First get the correct/incorrect status text
         const statusText = isCorrect ? msgCorrect : msgIncorrect;
-        const feedbackText = msgMarkedAs.replace('%(status)s', statusText);
+        // Then properly format the feedback message by replacing the placeholder
+        let feedbackText = msgMarkedAs.replace('%(status)s', statusText);
+        
+        // Display the feedback
         feedbackArea.innerHTML = `<p style="font-weight: bold; color: ${isCorrect ? 'green' : 'red'};">${escapeHTML(feedbackText)}</p>`;
 
-        // Add a "Next" button
+        // Add a "Next" button or "Finish" button based on current question index
+        const buttonHTML = document.createElement('div');
+        buttonHTML.style.marginTop = '15px';
+        
         if (currentQuestionIndex < currentPracticePairs.length - 1) {
-            feedbackArea.innerHTML += `<br><button id="next-btn" style="margin-top: 10px;">${escapeHTML(msgNextQuestion)}</button>`;
-            document.getElementById('next-btn').addEventListener('click', goToNextQuestion);
+            // Add the Next Question button with proper translation
+            const nextButton = document.createElement('button');
+            nextButton.textContent = msgNextQuestion; 
+            nextButton.id = 'next-btn';
+            nextButton.addEventListener('click', goToNextQuestion);
+            buttonHTML.appendChild(nextButton);
         } else {
-            // Last question was answered
-            feedbackArea.innerHTML += `<br><button id="finish-btn" style="margin-top: 10px;">${escapeHTML(msgFinishSession)}</button>`;
-            document.getElementById('finish-btn').addEventListener('click', finishSession);
+            // Add the Finish Session button with proper translation
+            const finishButton = document.createElement('button');
+            finishButton.textContent = msgFinishSession;
+            finishButton.id = 'finish-btn';
+            finishButton.addEventListener('click', finishSession);
+            buttonHTML.appendChild(finishButton);
         }
+        
+        feedbackArea.appendChild(buttonHTML);
     }
 
     function goToNextQuestion() {
@@ -226,11 +243,30 @@
     }
 
     function finishSession() {
-         practiceArea.innerHTML = `
-            <h2>${escapeHTML(msgSessionComplete)}</h2>
-            <p>${escapeHTML(msgReviewedAll.replace('%(count)s', currentPracticePairs.length))}</p>
-            <p><button onclick="location.reload()">${escapeHTML(msgPracticeAgain)}</button></p>
-        `;
+        const completionHTML = document.createElement('div');
+        
+        // Create session complete heading
+        const heading = document.createElement('h2');
+        heading.textContent = msgSessionComplete;
+        completionHTML.appendChild(heading);
+        
+        // Create message about reviewed pairs
+        const message = document.createElement('p');
+        message.textContent = msgReviewedAll.replace('%(count)s', currentPracticePairs.length);
+        completionHTML.appendChild(message);
+        
+        // Create button to practice again
+        const buttonPara = document.createElement('p');
+        const practiceAgainButton = document.createElement('button');
+        practiceAgainButton.textContent = msgPracticeAgain;
+        practiceAgainButton.onclick = function() { location.reload(); };
+        buttonPara.appendChild(practiceAgainButton);
+        completionHTML.appendChild(buttonPara);
+        
+        // Clear practice area and append the new content
+        practiceArea.innerHTML = '';
+        practiceArea.appendChild(completionHTML);
+        
         // Reset state if needed (optional)
         currentPracticePairs = [];
         currentQuestionIndex = -1;
