@@ -9,3 +9,51 @@ msgstr ""
 
 msgid "Hello World"
 msgstr "Привет, мир" # Translation for Hello World 
+
+#: src/frontend/templates/base.html:56
+msgid "Language"
+msgstr "Язык"
+
+#: src/frontend/templates/base.html:58
+msgid "English"
+msgstr "English"
+
+#: src/frontend/templates/base.html:59
+msgid "Italian"
+msgstr "Italiano"
+
+#: src/frontend/templates/base.html:60
+msgid "Russian"
+msgstr "Русский"
+
+#: src/frontend/templates/base.html:46
+msgid "Practice"
+msgstr "Практика"
+
+#: src/frontend/templates/base.html:47
+msgid "Progress"
+msgstr "Прогресс"
+
+#: src/frontend/templates/word_pair_list.html:280
+msgid "Edit"
+msgstr "Изменить"
+
+#: src/frontend/templates/word_pair_list.html:281
+msgid "Delete"
+msgstr "Удалить"
+
+#: src/frontend/templates/practice_mode.html:9
+msgid "Review your word pairs."
+msgstr "Просмотрите свои пары слов."
+
+#: src/frontend/templates/practice_mode.html:12
+msgid "Start Practice Session"
+msgstr "Начать Сессию Практики"
+
+#: src/frontend/templates/practice_mode.html:26
+msgid "Flashcard (%(current)s / %(total)s)"
+msgstr "Карточка (%(current)s / %(total)s)"
+
+#: src/frontend/templates/practice_mode.html:83
+msgid "Show Answer"
+msgstr "Показать Ответ" 

@@ -503,6 +503,54 @@ msgid_plural "{len_type} values are required, but {len_value} were given."
 msgstr[0] "Sono richiesti {len_type} valori, ma ne è stato fornito {len_value}."
 msgstr[1] "Sono richiesti {len_type} valori, ma ne sono stati forniti {len_value}."
 
+#: src/frontend/templates/base.html:56
+msgid "Language"
+msgstr "Lingua"
+
+#: src/frontend/templates/base.html:58
+msgid "English"
+msgstr "English"
+
+#: src/frontend/templates/base.html:59
+msgid "Italian"
+msgstr "Italiano"
+
+#: src/frontend/templates/base.html:60
+msgid "Russian"
+msgstr "Русский"
+
+#: src/frontend/templates/base.html:46
+msgid "Practice"
+msgstr "Esercitati"
+
+#: src/frontend/templates/base.html:47
+msgid "Progress"
+msgstr "Progresso"
+
+#: src/frontend/templates/word_pair_list.html:280
+msgid "Edit"
+msgstr "Modifica"
+
+#: src/frontend/templates/word_pair_list.html:281
+msgid "Delete"
+msgstr "Elimina"
+
+#: src/frontend/templates/practice_mode.html:9
+msgid "Review your word pairs."
+msgstr "Rivedi le tue coppie di parole."
+
+#: src/frontend/templates/practice_mode.html:12
+msgid "Start Practice Session"
+msgstr "Inizia Sessione di Esercizio"
+
+#: src/frontend/templates/practice_mode.html:26
+msgid "Flashcard (%(current)s / %(total)s)"
+msgstr "Scheda (%(current)s / %(total)s)"
+
+#: src/frontend/templates/practice_mode.html:83
+msgid "Show Answer"
+msgstr "Mostra Risposta"
+
 #~ msgid "Hello World"
 #~ msgstr "Ciao Mondo"
 
