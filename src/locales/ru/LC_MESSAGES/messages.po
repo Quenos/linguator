@@ -142,19 +142,19 @@ msgstr "Показать ответ"
 
 #: src/frontend/templates/practice_mode.html:36
 msgid "Did you know the answer?"
-msgstr ""
+msgstr "Вы знали ответ?"
 
 #: src/frontend/templates/practice_mode.html:37
 msgid "Error saving practice result:"
-msgstr ""
+msgstr "Ошибка при сохранении результата практики:"
 
 #: src/frontend/templates/practice_mode.html:38
 msgid "HTTP error! Status:"
-msgstr ""
+msgstr "Ошибка HTTP! Статус:"
 
 #: src/frontend/templates/practice_mode.html:39
 msgid "Cannot record feedback: currentWordPair or its ID is missing."
-msgstr ""
+msgstr "Невозможно записать отзыв: отсутствует текущая пара слов или ее ID."
 
 #: src/frontend/templates/practice_mode.html:40
 #, fuzzy

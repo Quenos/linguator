@@ -140,19 +140,19 @@ msgstr "Mostra Risposta"
 
 #: src/frontend/templates/practice_mode.html:36
 msgid "Did you know the answer?"
-msgstr ""
+msgstr "Conoscevi la risposta?"
 
 #: src/frontend/templates/practice_mode.html:37
 msgid "Error saving practice result:"
-msgstr ""
+msgstr "Errore nel salvare il risultato della pratica:"
 
 #: src/frontend/templates/practice_mode.html:38
 msgid "HTTP error! Status:"
-msgstr ""
+msgstr "Errore HTTP! Stato:"
 
 #: src/frontend/templates/practice_mode.html:39
 msgid "Cannot record feedback: currentWordPair or its ID is missing."
-msgstr ""
+msgstr "Impossibile registrare il feedback: coppia di parole corrente o ID mancante."
 
 #: src/frontend/templates/practice_mode.html:40
 #, fuzzy
@@ -190,11 +190,11 @@ msgstr "I dati di progresso sono stati reimpostati con successo!"
 
 #: src/frontend/templates/progress_tracking.html:47
 msgid "HTTP error! status:"
-msgstr ""
+msgstr "Errore HTTP! stato:"
 
 #: src/frontend/templates/progress_tracking.html:48
 msgid "Error fetching progress stats:"
-msgstr ""
+msgstr "Errore nel recuperare le statistiche di progresso:"
 
 #: src/frontend/templates/progress_tracking.html:49
 msgid "Error resetting progress data:"
