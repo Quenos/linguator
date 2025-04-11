@@ -1,44 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ _('Progress Tracking') }}</title>
-    <!-- Add link to CSS if available -->
+{% extends "base.html" %}
+
+{% block title %}{{ _('Progress Tracking') }}{% endblock %}
+
+{% block head_extra %}
+    <!-- Add page-specific styles here if needed, or keep them in base.html -->
     <style>
-        body { font-family: sans-serif; padding: 20px; }
+        /* Styles specific to progress tracking */
         .stats-container { margin-top: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
         .stat-item { margin-bottom: 10px; }
         .stat-label { font-weight: bold; }
         #loading-state { color: #888; }
         #error-state { color: red; display: none; }
-
-        /* Navigation Button Styles (copied from word_pair_list.html) */
-        .nav-links {
-            margin-top: 20px; /* Adjusted margin */
-            display: flex; /* Align buttons nicely */
-            gap: 10px; /* Space between buttons */
-        }
-        .nav-button {
-            display: inline-block; /* Allows padding and margins */
-            padding: 8px 15px;
-            background-color: #007bff; /* Example blue */
-            color: white !important; /* Ensure text color is white */
-            text-decoration: none; /* Remove underline */
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.2s; /* Smooth hover effect */
-            font-size: 1em; /* Match default text size */
-        }
-        .nav-button:hover {
-            background-color: #0056b3; /* Darker blue on hover */
-            color: white !important; /* Ensure text color stays white */
-            text-decoration: none;
-        }
     </style>
-</head>
-<body>
+{% endblock %}
+
+{% block content %}
     <h1>{{ _('Progress Tracking') }}</h1>
 
     <div id="loading-state">{{ _('Loading statistics...') }}</div>
@@ -55,6 +31,7 @@
         </div>
     </div>
 
+    <!-- Specific JS for this page -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const loadingState = document.getElementById('loading-state');
@@ -88,11 +65,6 @@
         });
     </script>
 
-    <!-- Link back to word pairs list -->
-    <div class="nav-links">
-        <a href="/ui/word-pairs" class="nav-button">{{ _('Back to Word Pairs') }}</a>
-        <a href="/ui/practice" class="nav-button">{{ _('Go To Practice') }}</a>
-    </div>
+    <!-- Removed navigation links as they are now in base.html -->
 
-</body>
-</html> 
+{% endblock %} 

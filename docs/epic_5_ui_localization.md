@@ -10,7 +10,7 @@
             *   Translation files (e.g., `en.json`, `it.json`, `ru.json`) are created containing keys for all extracted strings.
             *   English translations are complete.
             *   Placeholders are present for Italian and Russian translations.
-        *   **Tech Suggestions:** Manual extraction or i18n tooling/scripts.
+        *   **Tech Suggestions:** Manual extraction or i18n tooling/scripts. DON'T use HTMX.
 
     2.  **Ticket: Implement Language Selection Mechanism**
         *   **Background:** Provide a way for the user (or the application) to select the desired language and ensure the localization framework uses the correct translations.

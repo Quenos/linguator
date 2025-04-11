@@ -52,6 +52,15 @@
             <a href="/ui/word-pairs">{{ _('Word Pairs') }}</a>
             <a href="/ui/practice">{{ _('Practice') }}</a>
             <a href="/ui/progress">{{ _('Progress') }}</a>
+            {# Language Selector Dropdown #}
+            <div>
+                <label for="lang-select">{{ _('Language') }}: </label>
+                <select id="lang-select">
+                    <option value="en">{{ _('English') }}</option>
+                    <option value="it">{{ _('Italian') }}</option>
+                    <option value="ru">{{ _('Russian') }}</option>
+                </select>
+            </div>
         </nav>
         <main>
             {% block content %}
@@ -65,6 +74,52 @@
 
     {# Add links to JS files if you have them, e.g., in static/js #}
     {# <script src="{{ url_for('static', path='/js/main.js') }}"></script> #}
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const langSelect = document.getElementById('lang-select');
+            const currentHtmlLang = document.documentElement.lang || 'en'; // Default to 'en' if not set
+            const storedLang = localStorage.getItem('linguator_lang');
+            let initialLang = storedLang || currentHtmlLang; // Prioritize stored lang
+
+            // Ensure initialLang is a valid option
+            const validLangs = ['en', 'it', 'ru'];
+            if (!validLangs.includes(initialLang)) {
+                initialLang = 'en'; // Default to English if stored/html lang is invalid
+            }
+
+            // Set the dropdown to the initial language
+            if (langSelect) {
+                langSelect.value = initialLang;
+
+                langSelect.addEventListener('change', function() {
+                    const selectedLang = this.value;
+                    // Persist selection in Local Storage
+                    localStorage.setItem('linguator_lang', selectedLang);
+                    // Set cookie for FastAPI-Babel (path=/ ensures it applies to all paths)
+                    document.cookie = `babel_locale=${selectedLang};path=/;max-age=31536000`; // Expires in 1 year
+                    // Reload the page to apply the language change
+                    window.location.reload();
+                });
+            }
+
+             // Set the initial cookie if it doesn't match the determined language
+             // This handles the first visit or cases where the cookie expired/was cleared
+             const currentCookie = document.cookie
+                .split('; ')
+                .find(row => row.startsWith('babel_locale='))
+                ?.split('=')[1];
+
+            if (currentCookie !== initialLang) {
+                 document.cookie = `babel_locale=${initialLang};path=/;max-age=31536000`;
+                 // Only reload if the cookie HAD to be set and it's different from the page lang
+                 // This prevents a reload loop if the initial lang came from localStorage
+                 // but the server rendered a different lang initially (e.g. from Accept-Language header)
+                 if (currentHtmlLang !== initialLang) {
+                    window.location.reload();
+                 }
+            }
+        });
+    </script>
     {% block scripts %}{% endblock %}
 </body>
 </html> 
