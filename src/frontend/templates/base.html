@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="{{ request.scope.get('babel_locale', 'en').language }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{{ _('Linguator') }}{% endblock %}</title>
+    {# Add links to CSS files if you have them, e.g., in static/css #}
+    {# <link rel="stylesheet" href="{{ url_for('static', path='/css/styles.css') }}"> #}
+    <style>
+        /* Basic styling to make it usable */
+        body { font-family: sans-serif; margin: 20px; }
+        nav { margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 10px; }
+        nav a { margin-right: 10px; text-decoration: none; color: #007bff; }
+        nav a:hover { text-decoration: underline; }
+        main { margin-top: 20px; }
+        footer { margin-top: 40px; border-top: 1px solid #ccc; padding-top: 10px; font-size: 0.9em; color: #666; }
+        .container { max-width: 960px; margin: auto; padding: 15px; }
+        .header { margin-bottom: 20px; }
+        .practice-area, .word-pairs-list, .progress-area { margin-top: 20px; border: 1px solid #eee; padding: 20px; border-radius: 5px; }
+        button, .nav-button, .start-button { /* Basic button styling */
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: white !important;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 1em;
+            margin: 5px 5px 5px 0; /* Add some margin */
+        }
+        button:hover, .nav-button:hover, .start-button:hover {
+             background-color: #0056b3;
+        }
+        .start-button { background-color: #28a745; }
+        .start-button:hover { background-color: #218838; }
+        #feedback-area button { /* Style feedback buttons */
+             margin-right: 5px;
+        }
+        #correct-btn { background-color: #28a745; }
+        #correct-btn:hover { background-color: #218838; }
+        #incorrect-btn { background-color: #dc3545; }
+        #incorrect-btn:hover { background-color: #c82333; }
+
+    </style>
+    {% block head_extra %}{% endblock %}
+</head>
+<body>
+    <div class="container">
+        <nav>
+            {# Using direct paths as url_for might need named routes #}
+            <a href="/ui/word-pairs">{{ _('Word Pairs') }}</a>
+            <a href="/ui/practice">{{ _('Practice') }}</a>
+            <a href="/ui/progress">{{ _('Progress') }}</a>
+        </nav>
+        <main>
+            {% block content %}
+            <!-- Page-specific content will be inserted here -->
+            {% endblock %}
+        </main>
+        <footer>
+            <p>&copy; 2024 Linguator</p>
+        </footer>
+    </div> {# End container #}
+
+    {# Add links to JS files if you have them, e.g., in static/js #}
+    {# <script src="{{ url_for('static', path='/js/main.js') }}"></script> #}
+    {% block scripts %}{% endblock %}
+</body>
+</html> 

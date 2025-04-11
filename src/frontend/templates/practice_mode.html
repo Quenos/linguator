@@ -1,91 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Practice Mode - Linguator</title>
-    <!-- Removed HTMX script -->
-    <!-- Basic Styling (Optional) -->
-    <style>
-        body { font-family: sans-serif; padding: 20px; }
-        #practice-area { margin-top: 20px; border: 1px solid #ccc; padding: 15px; min-height: 150px; }
-        #flashcard { padding: 10px; border: 1px dashed #eee; margin-top: 10px; }
+{% extends "base.html" %}
 
-        /* Navigation Button Styles (copied from word_pair_list.html) */
-        .nav-links {
-            margin-bottom: 20px; /* Use margin-bottom like word_pair_list */
-            display: flex; /* Align buttons nicely */
-            gap: 10px; /* Space between buttons */
-        }
-        .nav-button {
-            display: inline-block; /* Allows padding and margins */
-            padding: 8px 15px;
-            background-color: #007bff; /* Example blue */
-            color: white !important; /* Ensure text color is white */
-            text-decoration: none; /* Remove underline */
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.2s; /* Smooth hover effect */
-            font-size: 1em; /* Match default text size */
-        }
-        .nav-button:hover {
-            background-color: #0056b3; /* Darker blue on hover */
-            color: white !important; /* Ensure text color stays white */
-            text-decoration: none;
-        }
+{% block title %}{{ _('Practice Mode') }}{% endblock %}
 
-        /* Specific style for the start button */
-        .start-button {
-            /* Inherit base styles from nav-button if desired, or define explicitly */
-            display: inline-block; /* Allows padding and margins */
-            padding: 8px 15px;
-            background-color: #28a745; /* Green */
-            color: white !important; /* Ensure text color is white */
-            text-decoration: none; /* Remove underline */
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.2s; /* Smooth hover effect */
-            font-size: 1em; /* Match default text size */
-            margin-bottom: 20px; /* Add some space below */
-        }
-        .start-button:hover {
-             background-color: #218838; /* Darker green */
-        }
-    </style>
-</head>
-<body>
-
-<h1>Practice Mode</h1>
-
-<!-- Add navigation links -->
-<div class="nav-links">
-    <a href="/ui/word-pairs" class="nav-button">Word Pairs List</a>
-    <a href="/ui/progress" class="nav-button">View Progress</a>
+{% block content %}
+<div class="container">
+    <div class="header">
+        <h1>{{ _('Practice Mode') }}</h1>
+        <p>{{ _('Review your word pairs.') }}</p>
+    </div>
+    <div id="practice-area" class="practice-area">
+        <button id="start-practice-btn" class="start-button">{{ _('Start Practice Session') }}</button>
+    </div>
 </div>
+{% endblock %}
 
-<!-- Button to start the practice session -->
-<button id="start-practice-btn" class="start-button">
-    Start Practice (10 words)
-</button>
-
-<!-- Area where the practice questions/feedback will be loaded -->
-<div id="practice-area">
-    <p>Click "Start Practice" to begin.</p>
-</div>
-
+{% block scripts %}
 <script>
-    // Store the fetched word pairs for the session
+    // Pre-translate strings using Jinja for use in JS
+    const msgMarkedAs = "{{ _('Marked as %(status)s.') }}";
+    const msgCorrect = "{{ _('Correct') }}";
+    const msgIncorrect = "{{ _('Incorrect') }}";
+    const msgNextQuestion = "{{ _('Next Question') }}";
+    const msgFinishSession = "{{ _('Finish Session') }}";
+    const msgSessionComplete = "{{ _('Session Complete!') }}";
+    const msgReviewedAll = "{{ _('You have reviewed all %(count)s word pairs.') }}"; // Keep count placeholder
+    const msgPracticeAgain = "{{ _('Practice Again') }}";
+    const msgLoadingQuestions = "{{ _('Loading questions...') }}";
+    const msgNoPairsFound = "{{ _('No word pairs found to practice.') }}";
+    const msgErrorLoading = "{{ _('Error loading questions: %(error_message)s. Please try again.') }}";
+    const msgInvalidIndex = "{{ _('Invalid question index.') }}";
+    const msgFlashcardTitle = "{{ _('Flashcard (%(current)s / %(total)s)') }}";
+    const msgSourceWord = "{{ _('Source Word:') }}";
+    const msgTargetWord = "{{ _('Target Word:') }}";
+    const msgShowAnswer = "{{ _('Show Answer') }}";
+    const msgDidYouKnow = "{{ _('Did you know the answer?') }}";
+
     let currentPracticePairs = [];
-    let currentQuestionIndex = -1; // Initialize to -1, will be 0 for the first question
-    let currentWordPair = null; // Store the currently displayed word pair
+    let currentQuestionIndex = -1;
+    let currentWordPair = null;
 
     const startButton = document.getElementById('start-practice-btn');
     const practiceArea = document.getElementById('practice-area');
 
     startButton.addEventListener('click', async () => {
         console.log('Start Practice clicked');
-        practiceArea.innerHTML = '<p>Loading questions...</p>'; // Provide immediate feedback
+        practiceArea.innerHTML = `<p>${escapeHTML(msgLoadingQuestions)}</p>`; // Use pre-translated string
         try {
             // Use the new dedicated practice session endpoint
             const response = await fetch('/practice-session/'); 
@@ -105,17 +64,20 @@
                 currentQuestionIndex = 0; // Set index to the first question
                 displayQuestion(currentQuestionIndex);
             } else {
-                practiceArea.innerHTML = '<p>No word pairs found to practice.</p>';
+                practiceArea.innerHTML = `<p>${escapeHTML(msgNoPairsFound)}</p>`; // Use pre-translated string
             }
         } catch (error) {
             console.error('Error fetching practice pairs:', error);
-            practiceArea.innerHTML = `<p>Error loading questions: ${escapeHTML(error.message)}. Please try again.</p>`;
+            // Use the pre-translated string and JS string replacement
+            const errorMessage = escapeHTML(error.message || 'Unknown error'); // Ensure message exists and escape it
+            const fullErrorMessage = msgErrorLoading.replace('%(error_message)s', errorMessage);
+            practiceArea.innerHTML = `<p style=\"color: red;\">${fullErrorMessage}</p>`; // Display the formatted message
         }
     });
 
     function displayQuestion(index) {
         if (index < 0 || index >= currentPracticePairs.length) {
-            practiceArea.innerHTML = '<p>Invalid question index.</p>'; // Should not happen in normal flow
+            practiceArea.innerHTML = `<p>${escapeHTML(msgInvalidIndex)}</p>`; // Should not happen in normal flow
             return;
         }
 
@@ -123,13 +85,13 @@
         // Generate HTML for the flashcard (only the source word initially)
         practiceArea.innerHTML = `
             <div id="flashcard">
-                <h2>Flashcard (${index + 1} / ${currentPracticePairs.length})</h2>
-                <p><strong>Source Word:</strong> ${escapeHTML(currentWordPair.source_word)}</p>
+                <h2>${escapeHTML(msgFlashcardTitle.replace('%(current)s', index + 1).replace('%(total)s', currentPracticePairs.length))}</h2>
+                <p><strong>${escapeHTML(msgSourceWord)}</strong> ${escapeHTML(currentWordPair.source_word)}</p>
                 <div id="answer-area">
                     <!-- Answer will be revealed here -->
                 </div>
                 <div id="feedback-area">
-                     <button id="show-answer-btn" class="start-button">Show Answer</button>
+                     <button id="show-answer-btn" class="start-button">${escapeHTML(msgShowAnswer)}</button>
                 </div>
                 <!-- Placeholder for navigation (Ticket 4) -->
                 <!-- <button>Next</button> -->
@@ -148,13 +110,13 @@
         const feedbackArea = document.getElementById('feedback-area');
 
         // Display the target word
-        answerArea.innerHTML = `<p><strong>Target Word:</strong> ${escapeHTML(currentWordPair.target_word)}</p>`;
+        answerArea.innerHTML = `<p><strong>${escapeHTML(msgTargetWord)}</strong> ${escapeHTML(currentWordPair.target_word)}</p>`;
 
         // Replace "Show Answer" with "Correct" / "Incorrect" buttons
         feedbackArea.innerHTML = `
-            <p>Did you know the answer?</p>
-            <button id="correct-btn" style="background-color: #28a745; color: white; margin-right: 5px;">Correct</button>
-            <button id="incorrect-btn" style="background-color: #dc3545; color: white;">Incorrect</button>
+            <p>${escapeHTML(msgDidYouKnow)}</p>
+            <button id="correct-btn" style="background-color: #28a745; color: white; margin-right: 5px;">${escapeHTML(msgCorrect)}</button>
+            <button id="incorrect-btn" style="background-color: #dc3545; color: white;">${escapeHTML(msgIncorrect)}</button>
         `;
 
         // Add event listeners to feedback buttons
@@ -210,15 +172,18 @@
 
         // Provide visual feedback
         flashcardDiv.style.border = isCorrect ? '2px solid green' : '2px solid red';
-        feedbackArea.innerHTML = `<p style="font-weight: bold; color: ${isCorrect ? 'green' : 'red'};">Marked as ${isCorrect ? 'Correct' : 'Incorrect'}.</p>`;
+        // Construct feedback using pre-translated strings and JS variables
+        const statusText = isCorrect ? msgCorrect : msgIncorrect;
+        const feedbackText = msgMarkedAs.replace('%(status)s', statusText);
+        feedbackArea.innerHTML = `<p style="font-weight: bold; color: ${isCorrect ? 'green' : 'red'};">${escapeHTML(feedbackText)}</p>`;
 
         // Add a "Next" button
         if (currentQuestionIndex < currentPracticePairs.length - 1) {
-            feedbackArea.innerHTML += '<br><button id="next-btn" style="margin-top: 10px;">Next Question</button>';
+            feedbackArea.innerHTML += `<br><button id="next-btn" style="margin-top: 10px;">${escapeHTML(msgNextQuestion)}</button>`;
             document.getElementById('next-btn').addEventListener('click', goToNextQuestion);
         } else {
             // Last question was answered
-            feedbackArea.innerHTML += '<br><button id="finish-btn" style="margin-top: 10px;">Finish Session</button>';
+            feedbackArea.innerHTML += `<br><button id="finish-btn" style="margin-top: 10px;">${escapeHTML(msgFinishSession)}</button>`;
             document.getElementById('finish-btn').addEventListener('click', finishSession);
         }
     }
@@ -236,9 +201,9 @@
 
     function finishSession() {
          practiceArea.innerHTML = `
-            <h2>Session Complete!</h2>
-            <p>You have reviewed all ${currentPracticePairs.length} word pairs.</p>
-            <p><button onclick="location.reload()">Practice Again</button></p>
+            <h2>${escapeHTML(msgSessionComplete)}</h2>
+            <p>${escapeHTML(msgReviewedAll.replace('%(count)s', currentPracticePairs.length))}</p>
+            <p><button onclick="location.reload()">${escapeHTML(msgPracticeAgain)}</button></p>
         `;
         // Reset state if needed (optional)
         currentPracticePairs = [];
@@ -254,6 +219,4 @@
     }
 
 </script>
-
-</body>
-</html> 
+{% endblock %} 

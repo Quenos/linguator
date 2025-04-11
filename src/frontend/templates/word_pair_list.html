@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Word Pair List</title>
+    <title>{{ _('Word Pair List') }}</title>
     <!-- Basic Styling (optional) -->
     <style>
         body { font-family: sans-serif; margin: 20px; }
@@ -113,30 +113,30 @@
 </head>
 <body>
 
-    <h1>Word Pairs</h1>
+    <h1>{{ _('Word Pairs') }}</h1>
 
     <!-- Add navigation link -->
     <div class="nav-links">
-        <a href="/ui/practice" class="nav-button">Practice Mode</a>
-        <a href="/ui/progress" class="nav-button">View Progress</a>
+        <a href="/ui/practice" class="nav-button">{{ _('Practice Mode') }}</a>
+        <a href="/ui/progress" class="nav-button">{{ _('View Progress') }}</a>
     </div>
 
     <!-- Placeholder for Search/Filter (Ticket 5) -->
     <div style="margin-bottom: 15px; display: flex; gap: 10px; align-items: center;">
-        <input type="search" id="search-input" placeholder="Search by source or target word..." style="padding: 8px; flex-grow: 1;">
+        <input type="search" id="search-input" placeholder="{{ _('Search by source or target word...') }}" style="padding: 8px; flex-grow: 1;">
         <select id="category-filter" style="padding: 8px;">
-            <option value="">All Categories</option>
-            <option value="Noun">Noun</option>
-            <option value="Pronoun">Pronoun</option>
-            <option value="Verb">Verb</option>
-            <option value="Adjective">Adjective</option>
-            <option value="Adverb">Adverb</option>
-            <option value="Preposition">Preposition</option>
-            <option value="Conjunction">Conjunction</option>
-            <option value="Interjection">Interjection</option>
-            <option value="Phrase">Phrase</option>
-            <option value="Sentence">Sentence</option>
-            <option value="Other">Other</option>
+            <option value="">{{ _('All Categories') }}</option>
+            <option value="Noun">{{ _('Noun') }}</option>
+            <option value="Pronoun">{{ _('Pronoun') }}</option>
+            <option value="Verb">{{ _('Verb') }}</option>
+            <option value="Adjective">{{ _('Adjective') }}</option>
+            <option value="Adverb">{{ _('Adverb') }}</option>
+            <option value="Preposition">{{ _('Preposition') }}</option>
+            <option value="Conjunction">{{ _('Conjunction') }}</option>
+            <option value="Interjection">{{ _('Interjection') }}</option>
+            <option value="Phrase">{{ _('Phrase') }}</option>
+            <option value="Sentence">{{ _('Sentence') }}</option>
+            <option value="Other">{{ _('Other') }}</option>
         </select>
     </div>
 
@@ -144,53 +144,53 @@
     <table>
         <thead>
             <tr>
-                <th>Source Word</th>
-                <th>Target Word</th>
-                <th>Category</th>
-                <th>Example Sentence</th>
-                <th>Actions</th>
+                <th>{{ _('Source Word') }}</th>
+                <th>{{ _('Target Word') }}</th>
+                <th>{{ _('Category') }}</th>
+                <th>{{ _('Example Sentence') }}</th>
+                <th>{{ _('Actions') }}</th>
             </tr>
         </thead>
         <tbody id="word-pair-table-body">
             <!-- Initial loading message (will be replaced by JS) -->
-            <tr><td colspan="5" id="loading-indicator">Loading word pairs...</td></tr>
+            <tr><td colspan="5" id="loading-indicator">{{ _('Loading word pairs...') }}</td></tr>
         </tbody>
     </table>
 
     <!-- Add New Word Pair Form (Ticket 2) -->
     <div id="add-form-container" class="form-container">
-        <h2>Add New Word Pair</h2>
+        <h2>{{ _('Add New Word Pair') }}</h2>
         <form id="add-form">
             <div>
-                <label for="add_source_word">Source Word:</label>
+                <label for="add_source_word">{{ _('Source Word:') }}</label>
                 <input type="text" id="add_source_word" name="source_word" required>
             </div>
             <div>
-                <label for="add_target_word">Target Word:</label>
+                <label for="add_target_word">{{ _('Target Word:') }}</label>
                 <input type="text" id="add_target_word" name="target_word" required>
             </div>
             <div>
-                <label for="add_category">Category:</label>
+                <label for="add_category">{{ _('Category:') }}</label>
                 <select id="add_category" name="category" required>
-                    <option value="" disabled selected>Select a category</option>
-                    <option value="Noun">Noun</option>
-                    <option value="Pronoun">Pronoun</option>
-                    <option value="Verb">Verb</option>
-                    <option value="Adjective">Adjective</option>
-                    <option value="Adverb">Adverb</option>
-                    <option value="Preposition">Preposition</option>
-                    <option value="Conjunction">Conjunction</option>
-                    <option value="Interjection">Interjection</option>
-                    <option value="Phrase">Phrase</option>
-                    <option value="Sentence">Sentence</option>
-                    <option value="Other">Other</option>
+                    <option value="" disabled selected>{{ _('Select a category') }}</option>
+                    <option value="Noun">{{ _('Noun') }}</option>
+                    <option value="Pronoun">{{ _('Pronoun') }}</option>
+                    <option value="Verb">{{ _('Verb') }}</option>
+                    <option value="Adjective">{{ _('Adjective') }}</option>
+                    <option value="Adverb">{{ _('Adverb') }}</option>
+                    <option value="Preposition">{{ _('Preposition') }}</option>
+                    <option value="Conjunction">{{ _('Conjunction') }}</option>
+                    <option value="Interjection">{{ _('Interjection') }}</option>
+                    <option value="Phrase">{{ _('Phrase') }}</option>
+                    <option value="Sentence">{{ _('Sentence') }}</option>
+                    <option value="Other">{{ _('Other') }}</option>
                 </select>
             </div>
             <div>
-                <label for="add_example_sentence">Example Sentence:</label>
+                <label for="add_example_sentence">{{ _('Example Sentence:') }}</label>
                 <textarea id="add_example_sentence" name="example_sentence"></textarea>
             </div>
-            <button type="submit">Save Word Pair</button>
+            <button type="submit">{{ _('Save Word Pair') }}</button>
         </form>
         <div id="add-form-feedback" class="form-feedback"></div>
     </div>
@@ -199,40 +199,40 @@
     <div id="edit-modal" class="modal">
       <div class="modal-content">
         <span class="close-btn">&times;</span>
-        <h2>Edit Word Pair</h2>
+        <h2>{{ _('Edit Word Pair') }}</h2>
         <form id="edit-form" class="form-container">
             <input type="hidden" id="edit_id" name="id">
             <div>
-                <label for="edit_source_word">Source Word:</label>
+                <label for="edit_source_word">{{ _('Source Word:') }}</label>
                 <input type="text" id="edit_source_word" name="source_word" required>
             </div>
             <div>
-                <label for="edit_target_word">Target Word:</label>
+                <label for="edit_target_word">{{ _('Target Word:') }}</label>
                 <input type="text" id="edit_target_word" name="target_word" required>
             </div>
             <div>
-                <label for="edit_category">Category:</label>
+                <label for="edit_category">{{ _('Category:') }}</label>
                  <select id="edit_category" name="category" required>
-                    <option value="" disabled>Select a category</option>
-                    <option value="Noun">Noun</option>
-                    <option value="Pronoun">Pronoun</option>
-                    <option value="Verb">Verb</option>
-                    <option value="Adjective">Adjective</option>
-                    <option value="Adverb">Adverb</option>
-                    <option value="Preposition">Preposition</option>
-                    <option value="Conjunction">Conjunction</option>
-                    <option value="Interjection">Interjection</option>
-                    <option value="Phrase">Phrase</option>
-                    <option value="Sentence">Sentence</option>
-                    <option value="Other">Other</option>
+                    <option value="" disabled>{{ _('Select a category') }}</option>
+                    <option value="Noun">{{ _('Noun') }}</option>
+                    <option value="Pronoun">{{ _('Pronoun') }}</option>
+                    <option value="Verb">{{ _('Verb') }}</option>
+                    <option value="Adjective">{{ _('Adjective') }}</option>
+                    <option value="Adverb">{{ _('Adverb') }}</option>
+                    <option value="Preposition">{{ _('Preposition') }}</option>
+                    <option value="Conjunction">{{ _('Conjunction') }}</option>
+                    <option value="Interjection">{{ _('Interjection') }}</option>
+                    <option value="Phrase">{{ _('Phrase') }}</option>
+                    <option value="Sentence">{{ _('Sentence') }}</option>
+                    <option value="Other">{{ _('Other') }}</option>
                 </select>
             </div>
             <div>
-                <label for="edit_example_sentence">Example Sentence:</label>
+                <label for="edit_example_sentence">{{ _('Example Sentence:') }}</label>
                 <textarea id="edit_example_sentence" name="example_sentence"></textarea>
             </div>
-            <button type="submit">Save Changes</button>
-            <button type="button" id="cancel-edit-btn">Cancel</button> <!-- Added Cancel button -->
+            <button type="submit">{{ _('Save Changes') }}</button>
+            <button type="button" id="cancel-edit-btn">{{ _('Cancel') }}</button> <!-- Added Cancel button -->
         </form>
         <div id="edit-form-feedback" class="form-feedback"></div>
       </div>

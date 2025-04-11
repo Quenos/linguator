@@ -1,11 +1,14 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_babel import Babel, BabelConfigs, BabelMiddleware
+# Ensure ONLY lazy_gettext is imported as _
+from fastapi_babel import lazy_gettext as _
 from contextlib import asynccontextmanager
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
 import os
+from jinja2 import Environment, FileSystemLoader # Import Jinja2 Environment components
 # Use relative import since database.py is in the same directory
 from .database import connect_to_mongo, close_mongo_connection, get_database
 # Import the new router
@@ -15,11 +18,16 @@ import logging
 # Define logger for this module
 logger = logging.getLogger(__name__)
 
+# Ensure the base directory is the project root for correct path resolution
+# This needs to be defined before BabelConfigs
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 # Babel configuration - might still be needed for context
 babel_configs = BabelConfigs(
-    ROOT_DIR=__file__,
+    ROOT_DIR=BASE_DIR, # Use BASE_DIR here
     BABEL_DEFAULT_LOCALE="en",
-    BABEL_TRANSLATION_DIRECTORY="locales",
+    # Use an absolute path for the translation directory
+    BABEL_TRANSLATION_DIRECTORY=os.path.join(BASE_DIR, "locales"),
 )
 babel = Babel(configs=babel_configs)
 
@@ -41,13 +49,7 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# Install Babel middleware instead of init_app
-# babel.install_middleware(app)
-
-# Add Babel middleware using the standard FastAPI method
-app.add_middleware(BabelMiddleware, babel_configs=babel_configs)
-
-# Add CORS middleware
+# Add CORS middleware first
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Allows all origins
@@ -56,16 +58,36 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
+# Add Babel middleware using the standard FastAPI method
+app.add_middleware(BabelMiddleware, babel_configs=babel_configs)
+
+# Install Babel middleware instead of init_app - Keep commented
+# babel.install_middleware(app)
+
 # --- Static Files & Templates Configuration ---
 
 # Ensure the base directory is the project root for correct path resolution
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# BASE_DIR is already defined above, no need to redefine
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Mount static files (like htmx.min.js) - REMOVED as static files are not used for this feature anymore
 # app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "src/frontend/static")), name="static")
 
-# Configure templates
-templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "src/frontend/templates"))
+# Configure templates by creating environment first
+# templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "src/frontend/templates"))
+# Comment out the i18n extension again
+# templates.env.add_extension(\'jinja2.ext.i18n\')
+# Use install_jinja again instead of configure_jinja_env
+# babel.install_jinja(templates.env)
+
+# Create and configure Jinja environment separately
+jinja_env = Environment(loader=FileSystemLoader(os.path.join(BASE_DIR, "src/frontend/templates")))
+babel.install_jinja(jinja_env) # Configure the env
+# Remove manual additions to globals
+# jinja_env.globals['_'] = gettext
+# jinja_env.globals['gettext'] = gettext
+# jinja_env.globals['ngettext'] = ngettext
+templates = Jinja2Templates(env=jinja_env) # Pass the pre-configured env
 
 # --- End Static Files & Templates Configuration ---
 
@@ -84,19 +106,29 @@ async def read_root(request: Request):
 @app.get("/ui/word-pairs", response_class=HTMLResponse)
 async def word_pairs_page(request: Request):
     """Serves the Word Pairs list UI page."""
-    return templates.TemplateResponse("word_pair_list.html", {"request": request})
+    context = {
+        "request": request,
+        "_": _  # Add back lazy_gettext to context
+    }
+    return templates.TemplateResponse("word_pair_list.html", context)
 
 @app.get("/ui/practice", response_class=HTMLResponse)
 async def practice_mode_page(request: Request):
     """Serves the Practice Mode UI shell page."""
-    # This just serves the initial HTML shell.
-    # The actual practice content is loaded via client-side JS now
-    return templates.TemplateResponse("practice_mode.html", {"request": request})
+    context = {
+        "request": request,
+        "_": _  # Add back lazy_gettext to context
+    }
+    return templates.TemplateResponse("practice_mode.html", context)
 
 @app.get("/ui/progress", response_class=HTMLResponse)
 async def progress_tracking_page(request: Request):
     """Serves the Progress Tracking UI page."""
-    return templates.TemplateResponse("progress_tracking.html", {"request": request})
+    context = {
+        "request": request,
+        "_": _  # Add back lazy_gettext to context
+    }
+    return templates.TemplateResponse("progress_tracking.html", context)
 
 # --- End UI Routes ---
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Progress Tracking</title>
+    <title>{{ _('Progress Tracking') }}</title>
     <!-- Add link to CSS if available -->
     <style>
         body { font-family: sans-serif; padding: 20px; }
@@ -39,18 +39,18 @@
     </style>
 </head>
 <body>
-    <h1>Progress Tracking</h1>
+    <h1>{{ _('Progress Tracking') }}</h1>
 
-    <div id="loading-state">Loading statistics...</div>
-    <div id="error-state">Failed to load statistics. Please try again later.</div>
+    <div id="loading-state">{{ _('Loading statistics...') }}</div>
+    <div id="error-state">{{ _('Failed to load statistics. Please try again later.') }}</div>
 
     <div id="stats-content" class="stats-container" style="display: none;">
         <div class="stat-item">
-            <span class="stat-label">Total Unique Words Practiced:</span>
+            <span class="stat-label">{{ _('Total Unique Words Practiced:') }}</span>
             <span id="total-words">--</span>
         </div>
         <div class="stat-item">
-            <span class="stat-label">Overall Accuracy:</span>
+            <span class="stat-label">{{ _('Overall Accuracy:') }}</span>
             <span id="accuracy">--</span>%
         </div>
     </div>
@@ -90,8 +90,8 @@
 
     <!-- Link back to word pairs list -->
     <div class="nav-links">
-        <a href="/ui/word-pairs" class="nav-button">Back to Word Pairs</a>
-        <a href="/ui/practice" class="nav-button">Go To Practice</a>
+        <a href="/ui/word-pairs" class="nav-button">{{ _('Back to Word Pairs') }}</a>
+        <a href="/ui/practice" class="nav-button">{{ _('Go To Practice') }}</a>
     </div>
 
 </body>
