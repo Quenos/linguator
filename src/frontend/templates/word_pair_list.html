@@ -201,8 +201,10 @@
                 <label for="edit_example_sentence">{{ _('Example Sentence:') }}</label>
                 <textarea id="edit_example_sentence" name="example_sentence"></textarea>
             </div>
-            <button type="submit">{{ _('Save Changes') }}</button>
-            <button type="button" id="cancel-edit-btn">{{ _('Cancel') }}</button> <!-- Added Cancel button -->
+            <div style="display: flex; justify-content: flex-start;">
+                <button type="submit">{{ _('Save Changes') }}</button>
+                <button type="button" id="cancel-edit-btn">{{ _('Cancel') }}</button>
+            </div>
         </form>
         <div id="edit-form-feedback" class="form-feedback"></div>
       </div>
@@ -225,6 +227,21 @@
         const msgConfirmDelete = "{{ _('Are you sure you want to delete this word pair?') }}";
         const msgErrorDeletingWordPair = "{{ _('Error deleting word pair.') }}";
         const msgErrorDeleting = "{{ _('Error deleting word pair:') }}";
+
+        // Category translations
+        const categoryTranslations = {
+            "Noun": "{{ _('Noun') }}",
+            "Pronoun": "{{ _('Pronoun') }}",
+            "Verb": "{{ _('Verb') }}",
+            "Adjective": "{{ _('Adjective') }}",
+            "Adverb": "{{ _('Adverb') }}",
+            "Preposition": "{{ _('Preposition') }}",
+            "Conjunction": "{{ _('Conjunction') }}",
+            "Interjection": "{{ _('Interjection') }}",
+            "Phrase": "{{ _('Phrase') }}",
+            "Sentence": "{{ _('Sentence') }}",
+            "Other": "{{ _('Other') }}"
+        };
 
         document.addEventListener('DOMContentLoaded', function() {
             const tableBody = document.getElementById('word-pair-table-body');
@@ -286,10 +303,12 @@
                 wordPairs.forEach(pair => {
                     const row = document.createElement('tr');
                     row.setAttribute('data-id', pair.id);
+                    // Use the translated category value
+                    const translatedCategory = categoryTranslations[pair.category] || pair.category;
                     row.innerHTML = `
                         <td>${escapeHTML(pair.source_word)}</td>
                         <td>${escapeHTML(pair.target_word)}</td>
-                        <td>${escapeHTML(pair.category)}</td>
+                        <td>${escapeHTML(translatedCategory)}</td>
                         <td>${escapeHTML(pair.example_sentence || '')}</td>
                         <td class="actions">
                             <button class="edit-btn">{{ _('Edit') }}</button>
