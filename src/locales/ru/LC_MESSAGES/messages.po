@@ -354,51 +354,51 @@ msgstr "Пары слов"
 
 #: src/frontend/templates/word_pair_list.html:217
 msgid "Error loading data."
-msgstr ""
+msgstr "Ошибка загрузки данных."
 
 #: src/frontend/templates/word_pair_list.html:218
 msgid "Please fill in all required fields."
-msgstr ""
+msgstr "Пожалуйста, заполните все обязательные поля."
 
 #: src/frontend/templates/word_pair_list.html:219
 #, fuzzy
 msgid "Error adding word pair."
-msgstr "Загрузка пар слов..."
+msgstr "Ошибка при добавлении пары слов."
 
 #: src/frontend/templates/word_pair_list.html:220
 msgid "Error adding word pair. Invalid server response."
-msgstr ""
+msgstr "Ошибка при добавлении пары слов. Неверный ответ сервера."
 
 #: src/frontend/templates/word_pair_list.html:221
 msgid "Word pair added successfully!"
-msgstr ""
+msgstr "Пара слов успешно добавлена!"
 
 #: src/frontend/templates/word_pair_list.html:222
 #, fuzzy
 msgid "Error updating word pair."
-msgstr "Загрузка пар слов..."
+msgstr "Ошибка при обновлении пары слов."
 
 #: src/frontend/templates/word_pair_list.html:223
 msgid "Error updating word pair. Invalid server response."
-msgstr ""
+msgstr "Ошибка при обновлении пары слов. Неверный ответ сервера."
 
 #: src/frontend/templates/word_pair_list.html:224
 msgid "Word pair updated successfully!"
-msgstr ""
+msgstr "Пара слов успешно обновлена!"
 
 #: src/frontend/templates/word_pair_list.html:225
 msgid "Are you sure you want to delete this word pair?"
-msgstr ""
+msgstr "Вы уверены, что хотите удалить эту пару слов?"
 
 #: src/frontend/templates/word_pair_list.html:226
 #, fuzzy
 msgid "Error deleting word pair."
-msgstr "Редактировать пару слов"
+msgstr "Ошибка при удалении пары слов."
 
 #: src/frontend/templates/word_pair_list.html:227
 #, fuzzy
 msgid "Error deleting word pair:"
-msgstr "Редактировать пару слов"
+msgstr "Ошибка при удалении пары слов:"
 
 #: src/frontend/templates/word_pair_list.html:295
 msgid "Edit"

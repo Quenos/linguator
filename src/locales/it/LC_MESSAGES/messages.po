@@ -348,51 +348,51 @@ msgstr "Coppie di parole"
 
 #: src/frontend/templates/word_pair_list.html:217
 msgid "Error loading data."
-msgstr ""
+msgstr "Errore durante il caricamento dei dati."
 
 #: src/frontend/templates/word_pair_list.html:218
 msgid "Please fill in all required fields."
-msgstr ""
+msgstr "Compilare tutti i campi obbligatori."
 
 #: src/frontend/templates/word_pair_list.html:219
 #, fuzzy
 msgid "Error adding word pair."
-msgstr "Caricamento coppie di parole..."
+msgstr "Errore durante l'aggiunta della coppia di parole."
 
 #: src/frontend/templates/word_pair_list.html:220
 msgid "Error adding word pair. Invalid server response."
-msgstr ""
+msgstr "Errore durante l'aggiunta della coppia di parole. Risposta del server non valida."
 
 #: src/frontend/templates/word_pair_list.html:221
 msgid "Word pair added successfully!"
-msgstr ""
+msgstr "Coppia di parole aggiunta con successo!"
 
 #: src/frontend/templates/word_pair_list.html:222
 #, fuzzy
 msgid "Error updating word pair."
-msgstr "Caricamento coppie di parole..."
+msgstr "Errore durante l'aggiornamento della coppia di parole."
 
 #: src/frontend/templates/word_pair_list.html:223
 msgid "Error updating word pair. Invalid server response."
-msgstr ""
+msgstr "Errore durante l'aggiornamento della coppia di parole. Risposta del server non valida."
 
 #: src/frontend/templates/word_pair_list.html:224
 msgid "Word pair updated successfully!"
-msgstr ""
+msgstr "Coppia di parole aggiornata con successo!"
 
 #: src/frontend/templates/word_pair_list.html:225
 msgid "Are you sure you want to delete this word pair?"
-msgstr ""
+msgstr "Sei sicuro di voler eliminare questa coppia di parole?"
 
 #: src/frontend/templates/word_pair_list.html:226
 #, fuzzy
 msgid "Error deleting word pair."
-msgstr "Modifica coppia di parole"
+msgstr "Errore durante l'eliminazione della coppia di parole."
 
 #: src/frontend/templates/word_pair_list.html:227
 #, fuzzy
 msgid "Error deleting word pair:"
-msgstr "Modifica coppia di parole"
+msgstr "Errore durante l'eliminazione della coppia di parole:"
 
 #: src/frontend/templates/word_pair_list.html:295
 msgid "Edit"
