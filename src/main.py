@@ -9,6 +9,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, RedirectResponse
 import os
 from jinja2 import Environment, FileSystemLoader # Import Jinja2 Environment components
+from typing import Optional
 # Use relative import since database.py is in the same directory
 from .database import connect_to_mongo, close_mongo_connection, get_database
 # Import the new router
@@ -22,12 +23,29 @@ logger = logging.getLogger(__name__)
 # This needs to be defined before BabelConfigs
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Custom locale selector that prioritizes the cookie over Accept-Language header
+def locale_selector(request: Request) -> Optional[str]:
+    # First check for the cookie
+    cookie_locale = request.cookies.get("babel_locale")
+    if cookie_locale:
+        logger.debug(f"Using locale from cookie: {cookie_locale}")
+        return cookie_locale
+    
+    # Fall back to Accept-Language header
+    accept_language = request.headers.get("Accept-Language")
+    if accept_language:
+        logger.debug(f"Using locale from Accept-Language: {accept_language}")
+        return accept_language
+    
+    # Default to None (which will use the default locale from config)
+    return None
+
 # Babel configuration - might still be needed for context
 babel_configs = BabelConfigs(
     ROOT_DIR=BASE_DIR, # Use BASE_DIR here
     BABEL_DEFAULT_LOCALE="en",
     # Use an absolute path for the translation directory
-    BABEL_TRANSLATION_DIRECTORY=os.path.join(BASE_DIR, "locales"),
+    BABEL_TRANSLATION_DIRECTORY=os.path.join(BASE_DIR, "src/locales"),
 )
 babel = Babel(configs=babel_configs)
 
@@ -58,8 +76,12 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
-# Add Babel middleware using the standard FastAPI method
-app.add_middleware(BabelMiddleware, babel_configs=babel_configs)
+# Add Babel middleware using the standard FastAPI method with our custom locale selector
+app.add_middleware(
+    BabelMiddleware, 
+    babel_configs=babel_configs,
+    locale_selector=locale_selector
+)
 
 # Install Babel middleware instead of init_app - Keep commented
 # babel.install_middleware(app)
