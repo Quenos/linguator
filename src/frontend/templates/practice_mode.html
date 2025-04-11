@@ -114,7 +114,47 @@
     }
 
     function handleFeedback(isCorrect) {
-        console.log(`User feedback recorded: ${isCorrect ? 'Correct' : 'Incorrect'} for word pair ID: ${currentWordPair._id}`); // Placeholder for recording result (Epic 4, Ticket 2)
+        // console.log(`User feedback recorded: ${isCorrect ? 'Correct' : 'Incorrect'} for word pair ID: ${currentWordPair._id}`); // Placeholder for recording result (Epic 4, Ticket 2)
+
+        // --- Start: Epic 4, Ticket 2 Implementation ---
+        if (currentWordPair && currentWordPair._id) {
+            const resultData = {
+                word_pair_id: currentWordPair._id,
+                is_correct: isCorrect
+            };
+
+            fetch('/practice-session/results', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(resultData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    // Attempt to read error detail from response
+                    return response.json().then(err => {
+                        throw new Error(err.detail || `HTTP error! Status: ${response.status}`);
+                    }).catch(() => {
+                        // Fallback if response is not JSON or has no detail
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    });
+                }
+                return response.json(); // Or handle success response if needed
+            })
+            .then(data => {
+                console.log('Practice result saved:', data);
+            })
+            .catch(error => {
+                console.error('Error saving practice result:', error);
+                // Optionally, display a user-facing error message in the UI
+                // feedbackArea.innerHTML += `<p style="color: red; font-size: small;">Error saving result: ${escapeHTML(error.message)}</p>`;
+            });
+        } else {
+            console.error('Cannot record feedback: currentWordPair or its ID is missing.');
+        }
+        // --- End: Epic 4, Ticket 2 Implementation ---
 
         const flashcardDiv = document.getElementById('flashcard');
         const feedbackArea = document.getElementById('feedback-area');
