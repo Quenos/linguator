@@ -3,8 +3,8 @@ from motor.motor_asyncio import AsyncIOMotorCollection
 from typing import List, Optional
 import random # Although $sample is preferred, keep import for potential future use
 
-from src.database import get_collection
-from ..models import WordPairInDB
+from src.database import get_collection, add_practice_result
+from ..models import WordPairInDB, PracticeResultBase, PracticeResultInDB
 
 router = APIRouter(
     prefix="/practice-session",
@@ -54,4 +54,23 @@ async def get_practice_session_word_pairs(
     except Exception as e:
         # Log the exception e
         print(f"Error fetching practice session pairs: {e}")
-        raise HTTPException(status_code=500, detail="Failed to retrieve word pairs for practice session") 
+        raise HTTPException(status_code=500, detail="Failed to retrieve word pairs for practice session")
+
+@router.post(
+    "/results",
+    response_description="Record a practice result",
+    response_model=PracticeResultInDB,
+    status_code=201 # Return 201 Created on successful creation
+)
+async def record_practice_result(result: PracticeResultBase):
+    """
+    Receives and stores the result of a single practice item (e.g., flashcard answer).
+    """
+    try:
+        # Add the result to the database
+        created_result = await add_practice_result(result)
+        return created_result
+    except Exception as e:
+        # Log the exception
+        print(f"Error recording practice result: {e}") # Consider more robust logging
+        raise HTTPException(status_code=500, detail=f"Failed to record practice result: {str(e)}") 

@@ -3,6 +3,7 @@ from typing import Optional, Any
 from datetime import datetime
 from bson import ObjectId # Import ObjectId
 from pydantic_core import core_schema # Import core_schema
+from pydantic import ValidationInfo # Import ValidationInfo from pydantic
 from pydantic.json_schema import JsonSchemaValue, GetJsonSchemaHandler
 from pydantic import GetCoreSchemaHandler
 
@@ -15,7 +16,9 @@ class PyObjectId(ObjectId):
     ) -> core_schema.CoreSchema:
         """Define the Pydantic V2 core schema for ObjectId validation and serialization."""
         # Validator function: takes input and returns ObjectId or raises ValueError
-        def validate_from_input(value: Any) -> ObjectId:
+        # Updated signature to accept optional ValidationInfo
+        def validate_from_input(value: Any, info: ValidationInfo) -> ObjectId:
+            # info is not used here, but the signature needs to accept it
             if isinstance(value, ObjectId):
                 return value
             if ObjectId.is_valid(str(value)): # Try converting to string first
@@ -25,6 +28,7 @@ class PyObjectId(ObjectId):
         # Schema for input: Accepts str or ObjectId
         # Use core_schema.with_info_plain_validator_function for compatibility
         # with potential future context needs, though not used here.
+        # This validator expects a function with signature (value: Any, info: ValidationInfo)
         input_schema = core_schema.with_info_plain_validator_function(validate_from_input)
 
         return core_schema.json_or_python_schema(
@@ -107,6 +111,38 @@ class WordPairUpdate(BaseModel):
                 "source_word": "goodbye",
                 "target_word": "arrivederci",
                 "category": "farewell"
+            }
+        }
+    )
+
+# Models for Practice Results
+class PracticeResultBase(BaseModel):
+    """Base model for recording a practice result."""
+    word_pair_id: PyObjectId = Field(..., description="The ID of the WordPair practiced")
+    is_correct: bool = Field(..., description="Whether the user answered correctly")
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "word_pair_id": "60d5ec49f7eade7f5c9f2f5e", # Example ObjectId
+                "is_correct": True,
+            }
+        }
+    )
+
+class PracticeResultInDB(PracticeResultBase):
+    """Model representing a practice result as stored in the database."""
+    id: PyObjectId = Field(..., alias="_id")
+    timestamp: datetime = Field(..., description="Timestamp when the result was recorded")
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+        json_schema_extra={
+            "example": {
+                "_id": "61e0f8a7a7d8f9b3c8e4f5b1", # Example ObjectId
+                "word_pair_id": "60d5ec49f7eade7f5c9f2f5e",
+                "is_correct": False,
+                "timestamp": "2023-01-15T10:30:00Z",
             }
         }
     ) 

@@ -2,6 +2,8 @@ import os
 from motor.motor_asyncio import AsyncIOMotorClient
 from dotenv import load_dotenv
 import logging
+from .models import PracticeResultBase, PracticeResultInDB, WordPairInDB, WordPairUpdate, WordPairBase # Ensure PracticeResult models are imported
+from datetime import datetime
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -118,4 +120,23 @@ get_collection = db_manager.get_collection
 # Example of how to get a collection
 # def get_word_pair_collection():
 #    database = get_database()
-#    return database.get_collection("word_pairs") 
+#    return database.get_collection("word_pairs")
+
+async def add_practice_result(result_data: PracticeResultBase) -> PracticeResultInDB:
+    """Adds a practice result to the database."""
+    collection = get_collection("practice_results")
+    timestamp = datetime.utcnow()
+    result_dict = result_data.model_dump()
+    result_dict["timestamp"] = timestamp
+
+    inserted_result = await collection.insert_one(result_dict)
+
+    # Retrieve the inserted document to confirm and get the generated ID and timestamp
+    created_result = await collection.find_one({"_id": inserted_result.inserted_id})
+
+    if created_result:
+        # Use PracticeResultInDB for parsing the result from DB
+        return PracticeResultInDB.model_validate(created_result) # Use model_validate for Pydantic V2
+    else:
+        # This should ideally not happen if insert_one succeeds
+        raise RuntimeError("Failed to retrieve the newly inserted practice result.") 
