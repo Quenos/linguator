@@ -24,18 +24,25 @@ def get_word_pair_collection() -> AsyncIOMotorCollection:
 )
 async def get_practice_session_word_pairs(
     collection: AsyncIOMotorCollection = Depends(get_word_pair_collection),
-    count: Optional[int] = Query(DEFAULT_PRACTICE_COUNT, description=f"Number of word pairs for the session (default: {DEFAULT_PRACTICE_COUNT})")
+    count: Optional[int] = Query(DEFAULT_PRACTICE_COUNT, description=f"Number of word pairs for the session (default: {DEFAULT_PRACTICE_COUNT})"),
+    category: Optional[str] = Query(None, description="Filter word pairs by category")
 ):
     """
     Retrieves a randomized list of word pairs for a practice session.
     Uses MongoDB's $sample aggregation stage for efficiency.
+    Can be filtered by category if specified.
     """
     if count is None or count <= 0:
         count = DEFAULT_PRACTICE_COUNT
 
-    pipeline = [
-        { "$sample": { "size": count } }
-    ]
+    pipeline = []
+    
+    # Add category filter if provided
+    if category:
+        pipeline.append({"$match": {"category": category}})
+    
+    # Add random sampling
+    pipeline.append({"$sample": {"size": count}})
 
     try:
         word_pairs_cursor = collection.aggregate(pipeline)

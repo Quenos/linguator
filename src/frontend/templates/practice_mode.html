@@ -8,6 +8,23 @@
         <h1>{{ _('Practice Mode') }}</h1>
         <p>{{ _('Review your word pairs.') }}</p>
     </div>
+    <!-- Add category filter dropdown -->
+    <div style="margin-bottom: 15px;">
+        <select id="category-filter" style="padding: 8px;">
+            <option value="">{{ _('All Categories') }}</option>
+            <option value="Noun">{{ _('Noun') }}</option>
+            <option value="Pronoun">{{ _('Pronoun') }}</option>
+            <option value="Verb">{{ _('Verb') }}</option>
+            <option value="Adjective">{{ _('Adjective') }}</option>
+            <option value="Adverb">{{ _('Adverb') }}</option>
+            <option value="Preposition">{{ _('Preposition') }}</option>
+            <option value="Conjunction">{{ _('Conjunction') }}</option>
+            <option value="Interjection">{{ _('Interjection') }}</option>
+            <option value="Phrase">{{ _('Phrase') }}</option>
+            <option value="Sentence">{{ _('Sentence') }}</option>
+            <option value="Other">{{ _('Other') }}</option>
+        </select>
+    </div>
     <div id="practice-area" class="practice-area">
         <button id="start-practice-btn" class="start-button">{{ _('Start Practice Session') }}</button>
     </div>
@@ -45,13 +62,21 @@
 
     const startButton = document.getElementById('start-practice-btn');
     const practiceArea = document.getElementById('practice-area');
+    const categoryFilter = document.getElementById('category-filter');
 
     startButton.addEventListener('click', async () => {
         console.log('Start Practice clicked');
         practiceArea.innerHTML = `<p>${escapeHTML(msgLoadingQuestions)}</p>`; // Use pre-translated string
         try {
-            // Use the new dedicated practice session endpoint
-            const response = await fetch('/practice-session/'); 
+            // Get the selected category
+            const category = categoryFilter.value;
+            
+            // Use the dedicated practice session endpoint with category filter
+            const url = category 
+                ? `/practice-session/?category=${encodeURIComponent(category)}` 
+                : '/practice-session/';
+                
+            const response = await fetch(url); 
             if (!response.ok) {
                 // Try to get error detail from response body if possible
                 let errorDetail = `${msgHttpError} ${response.status}`;
@@ -81,51 +106,48 @@
 
     function displayQuestion(index) {
         if (index < 0 || index >= currentPracticePairs.length) {
-            practiceArea.innerHTML = `<p>${escapeHTML(msgInvalidIndex)}</p>`; // Should not happen in normal flow
+            console.error('Invalid question index:', index);
+            practiceArea.innerHTML = `<p style="color: red;">${escapeHTML(msgInvalidIndex)}</p>`;
             return;
         }
-
-        currentWordPair = currentPracticePairs[index]; // Store current pair
-        // Generate HTML for the flashcard (only the source word initially)
-        practiceArea.innerHTML = `
-            <div id="flashcard">
-                <h2>${escapeHTML(msgFlashcardTitle.replace('%(current)s', index + 1).replace('%(total)s', currentPracticePairs.length))}</h2>
+        currentWordPair = currentPracticePairs[index];
+        
+        // Create a flashcard style display
+        const flashcardTitle = msgFlashcardTitle
+            .replace('%(current)s', index + 1)
+            .replace('%(total)s', currentPracticePairs.length);
+            
+        const flashcardHTML = `
+            <div id="flashcard" style="border: 1px solid #ccc; padding: 20px; margin: 20px 0; border-radius: 5px;">
+                <h3>${escapeHTML(flashcardTitle)}</h3>
                 <p><strong>${escapeHTML(msgSourceWord)}</strong> ${escapeHTML(currentWordPair.source_word)}</p>
-                <div id="answer-area">
-                    <!-- Answer will be revealed here -->
+                <div id="answer-section" style="display: none;">
+                    <p><strong>${escapeHTML(msgTargetWord)}</strong> ${escapeHTML(currentWordPair.target_word)}</p>
                 </div>
-                <div id="feedback-area">
-                     <button id="show-answer-btn" class="start-button">${escapeHTML(msgShowAnswer)}</button>
-                </div>
-                <!-- Placeholder for navigation (Ticket 4) -->
-                <!-- <button>Next</button> -->
+                <button id="show-answer-btn">${escapeHTML(msgShowAnswer)}</button>
             </div>
-        `;
-        console.log(`Displayed question ${index + 1}:`, currentWordPair);
-
-        // Add event listener to the new button
-        document.getElementById('show-answer-btn').addEventListener('click', revealAnswer);
-    }
-
-    function revealAnswer() {
-        if (!currentWordPair) return; // Should not happen
-
-        const answerArea = document.getElementById('answer-area');
-        const feedbackArea = document.getElementById('feedback-area');
-
-        // Display the target word
-        answerArea.innerHTML = `<p><strong>${escapeHTML(msgTargetWord)}</strong> ${escapeHTML(currentWordPair.target_word)}</p>`;
-
-        // Replace "Show Answer" with "Correct" / "Incorrect" buttons
-        feedbackArea.innerHTML = `
-            <p>${escapeHTML(msgDidYouKnow)}</p>
-            <button id="correct-btn" style="background-color: #28a745; color: white; margin-right: 5px;">${escapeHTML(msgCorrect)}</button>
-            <button id="incorrect-btn" style="background-color: #dc3545; color: white;">${escapeHTML(msgIncorrect)}</button>
+            <div id="feedback-area" style="margin-top: 15px;"></div>
         `;
 
-        // Add event listeners to feedback buttons
-        document.getElementById('correct-btn').addEventListener('click', () => handleFeedback(true));
-        document.getElementById('incorrect-btn').addEventListener('click', () => handleFeedback(false));
+        practiceArea.innerHTML = flashcardHTML;
+
+        // Add event listener to the show answer button
+        document.getElementById('show-answer-btn').addEventListener('click', () => {
+            document.getElementById('answer-section').style.display = 'block';
+            document.getElementById('show-answer-btn').style.display = 'none'; // Hide the button
+            
+            // Show feedback buttons after revealing the answer
+            const feedbackArea = document.getElementById('feedback-area');
+            feedbackArea.innerHTML = `
+                <p>${escapeHTML(msgDidYouKnow)}</p>
+                <button id="correct-btn" style="margin-right: 10px;">${escapeHTML(msgCorrect)}</button>
+                <button id="incorrect-btn">${escapeHTML(msgIncorrect)}</button>
+            `;
+            
+            // Add event listeners to feedback buttons
+            document.getElementById('correct-btn').addEventListener('click', () => handleFeedback(true));
+            document.getElementById('incorrect-btn').addEventListener('click', () => handleFeedback(false));
+        });
     }
 
     function handleFeedback(isCorrect) {
