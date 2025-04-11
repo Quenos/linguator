@@ -69,55 +69,53 @@ msgstr "Начать сессию практики"
 #: src/frontend/templates/practice_mode.html:20
 #, python-format
 msgid "Marked as %(status)s."
-msgstr ""
+msgstr "Отмечено как %(status)s."
 
 #: src/frontend/templates/practice_mode.html:21
 msgid "Correct"
-msgstr ""
+msgstr "Верно"
 
 #: src/frontend/templates/practice_mode.html:22
 msgid "Incorrect"
-msgstr ""
+msgstr "Неверно"
 
 #: src/frontend/templates/practice_mode.html:23
 msgid "Next Question"
-msgstr ""
+msgstr "Следующий вопрос"
 
 #: src/frontend/templates/practice_mode.html:24
 msgid "Finish Session"
-msgstr ""
+msgstr "Завершить сессию"
 
 #: src/frontend/templates/practice_mode.html:25
 msgid "Session Complete!"
-msgstr ""
+msgstr "Сессия завершена!"
 
 #: src/frontend/templates/practice_mode.html:26
-#, fuzzy, python-format
+#, python-format
 msgid "You have reviewed all %(count)s word pairs."
-msgstr "Просмотрите свои пары слов."
+msgstr "Вы просмотрели все %(count)s пары слов."
 
 #: src/frontend/templates/practice_mode.html:27
-#, fuzzy
 msgid "Practice Again"
-msgstr "Практика"
+msgstr "Практиковаться снова"
 
 #: src/frontend/templates/practice_mode.html:28
-#, fuzzy
 msgid "Loading questions..."
-msgstr "Загрузка статистики..."
+msgstr "Загрузка вопросов..."
 
 #: src/frontend/templates/practice_mode.html:29
 msgid "No word pairs found to practice."
-msgstr ""
+msgstr "Не найдено пар слов для практики."
 
 #: src/frontend/templates/practice_mode.html:30
 #, python-format
 msgid "Error loading questions: %(error_message)s. Please try again."
-msgstr ""
+msgstr "Ошибка загрузки вопросов: %(error_message)s. Пожалуйста, попробуйте еще раз."
 
 #: src/frontend/templates/practice_mode.html:31
 msgid "Invalid question index."
-msgstr ""
+msgstr "Неверный индекс вопроса."
 
 #: src/frontend/templates/practice_mode.html:32
 #, python-format
@@ -157,7 +155,6 @@ msgid "Cannot record feedback: currentWordPair or its ID is missing."
 msgstr "Невозможно записать отзыв: отсутствует текущая пара слов или ее ID."
 
 #: src/frontend/templates/practice_mode.html:40
-#, fuzzy
 msgid "Unknown error"
 msgstr "неизвестная ошибка"
 
@@ -192,14 +189,13 @@ msgstr "Данные о прогрессе успешно сброшены!"
 
 #: src/frontend/templates/progress_tracking.html:47
 msgid "HTTP error! status:"
-msgstr ""
+msgstr "Ошибка HTTP! Статус:"
 
 #: src/frontend/templates/progress_tracking.html:48
 msgid "Error fetching progress stats:"
-msgstr ""
+msgstr "Ошибка при получении статистики прогресса:"
 
 #: src/frontend/templates/progress_tracking.html:49
-#, fuzzy
 msgid "Error resetting progress data:"
 msgstr "Ошибка при сбросе данных о прогрессе:"
 
@@ -346,11 +342,9 @@ msgstr "Сохранить изменения"
 msgid "Cancel"
 msgstr "Отмена"
 
-# Additional entries that may be missing from template references
 #: src/frontend/templates/word_pair_list.html:216
-#, fuzzy
 msgid "No word pairs found."
-msgstr "Пары слов"
+msgstr "Пары слов не найдены."
 
 #: src/frontend/templates/word_pair_list.html:217
 msgid "Error loading data."
@@ -361,7 +355,6 @@ msgid "Please fill in all required fields."
 msgstr "Пожалуйста, заполните все обязательные поля."
 
 #: src/frontend/templates/word_pair_list.html:219
-#, fuzzy
 msgid "Error adding word pair."
 msgstr "Ошибка при добавлении пары слов."
 
@@ -374,7 +367,6 @@ msgid "Word pair added successfully!"
 msgstr "Пара слов успешно добавлена!"
 
 #: src/frontend/templates/word_pair_list.html:222
-#, fuzzy
 msgid "Error updating word pair."
 msgstr "Ошибка при обновлении пары слов."
 
@@ -391,12 +383,10 @@ msgid "Are you sure you want to delete this word pair?"
 msgstr "Вы уверены, что хотите удалить эту пару слов?"
 
 #: src/frontend/templates/word_pair_list.html:226
-#, fuzzy
 msgid "Error deleting word pair."
 msgstr "Ошибка при удалении пары слов."
 
 #: src/frontend/templates/word_pair_list.html:227
-#, fuzzy
 msgid "Error deleting word pair:"
 msgstr "Ошибка при удалении пары слов:"
 
