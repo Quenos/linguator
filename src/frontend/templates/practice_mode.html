@@ -29,6 +29,7 @@
     // Store the fetched word pairs for the session
     let currentPracticePairs = [];
     let currentQuestionIndex = -1; // Initialize to -1, will be 0 for the first question
+    let currentWordPair = null; // Store the currently displayed word pair
 
     const startButton = document.getElementById('start-practice-btn');
     const practiceArea = document.getElementById('practice-area');
@@ -62,21 +63,63 @@
             return;
         }
 
-        const wordPair = currentPracticePairs[index];
+        currentWordPair = currentPracticePairs[index]; // Store current pair
         // Generate HTML for the flashcard (only the source word initially)
         practiceArea.innerHTML = `
             <div id="flashcard">
                 <h2>Flashcard (${index + 1} / ${currentPracticePairs.length})</h2>
-                <p><strong>Source Word:</strong> ${escapeHTML(wordPair.source_word)}</p>
-                
-                <!-- Placeholder for answer reveal mechanism (Ticket 3) -->
-                <button>Show Answer</button> 
-                
+                <p><strong>Source Word:</strong> ${escapeHTML(currentWordPair.source_word)}</p>
+                <div id="answer-area">
+                    <!-- Answer will be revealed here -->
+                </div>
+                <div id="feedback-area">
+                     <button id="show-answer-btn">Show Answer</button>
+                </div>
                 <!-- Placeholder for navigation (Ticket 4) -->
                 <!-- <button>Next</button> -->
             </div>
         `;
-        console.log(`Displayed question ${index + 1}:`, wordPair);
+        console.log(`Displayed question ${index + 1}:`, currentWordPair);
+
+        // Add event listener to the new button
+        document.getElementById('show-answer-btn').addEventListener('click', revealAnswer);
+    }
+
+    function revealAnswer() {
+        if (!currentWordPair) return; // Should not happen
+
+        const answerArea = document.getElementById('answer-area');
+        const feedbackArea = document.getElementById('feedback-area');
+
+        // Display the target word
+        answerArea.innerHTML = `<p><strong>Target Word:</strong> ${escapeHTML(currentWordPair.target_word)}</p>`;
+
+        // Replace "Show Answer" with "Correct" / "Incorrect" buttons
+        feedbackArea.innerHTML = `
+            <p>Did you know the answer?</p>
+            <button id="correct-btn" style="background-color: #28a745; color: white; margin-right: 5px;">Correct</button>
+            <button id="incorrect-btn" style="background-color: #dc3545; color: white;">Incorrect</button>
+        `;
+
+        // Add event listeners to feedback buttons
+        document.getElementById('correct-btn').addEventListener('click', () => handleFeedback(true));
+        document.getElementById('incorrect-btn').addEventListener('click', () => handleFeedback(false));
+    }
+
+    function handleFeedback(isCorrect) {
+        console.log(`User feedback recorded: ${isCorrect ? 'Correct' : 'Incorrect'} for word pair ID: ${currentWordPair._id}`); // Placeholder for recording result (Epic 4, Ticket 2)
+
+        const flashcardDiv = document.getElementById('flashcard');
+        const feedbackArea = document.getElementById('feedback-area');
+
+        // Provide visual feedback
+        flashcardDiv.style.border = isCorrect ? '2px solid green' : '2px solid red';
+        feedbackArea.innerHTML = `<p style="font-weight: bold; color: ${isCorrect ? 'green' : 'red'};">Marked as ${isCorrect ? 'Correct' : 'Incorrect'}.</p>`;
+
+        // TODO: Add a "Next" button here as part of Ticket 4 logic
+        // Example: feedbackArea.innerHTML += '<button id="next-btn">Next</button>';
+        //          document.getElementById('next-btn').addEventListener('click', goToNextQuestion);
+
     }
 
     // Basic HTML escaping function to prevent XSS
