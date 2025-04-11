@@ -116,10 +116,38 @@
         flashcardDiv.style.border = isCorrect ? '2px solid green' : '2px solid red';
         feedbackArea.innerHTML = `<p style="font-weight: bold; color: ${isCorrect ? 'green' : 'red'};">Marked as ${isCorrect ? 'Correct' : 'Incorrect'}.</p>`;
 
-        // TODO: Add a "Next" button here as part of Ticket 4 logic
-        // Example: feedbackArea.innerHTML += '<button id="next-btn">Next</button>';
-        //          document.getElementById('next-btn').addEventListener('click', goToNextQuestion);
+        // Add a "Next" button
+        if (currentQuestionIndex < currentPracticePairs.length - 1) {
+            feedbackArea.innerHTML += '<br><button id="next-btn" style="margin-top: 10px;">Next Question</button>';
+            document.getElementById('next-btn').addEventListener('click', goToNextQuestion);
+        } else {
+            // Last question was answered
+            feedbackArea.innerHTML += '<br><button id="finish-btn" style="margin-top: 10px;">Finish Session</button>';
+            document.getElementById('finish-btn').addEventListener('click', finishSession);
+        }
+    }
 
+    function goToNextQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < currentPracticePairs.length) {
+            displayQuestion(currentQuestionIndex);
+        } else {
+            // This case should technically be handled by the finish button now,
+            // but keep it as a safeguard.
+            finishSession();
+        }
+    }
+
+    function finishSession() {
+         practiceArea.innerHTML = `
+            <h2>Session Complete!</h2>
+            <p>You have reviewed all ${currentPracticePairs.length} word pairs.</p>
+            <p><button onclick="location.reload()">Practice Again</button></p>
+        `;
+        // Reset state if needed (optional)
+        currentPracticePairs = [];
+        currentQuestionIndex = -1;
+        currentWordPair = null;
     }
 
     // Basic HTML escaping function to prevent XSS
