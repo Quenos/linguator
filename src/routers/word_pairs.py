@@ -1,7 +1,7 @@
-from fastapi import APIRouter, Body, HTTPException, status, Depends, Request
+from fastapi import APIRouter, Body, HTTPException, status, Depends, Request, Query
 from fastapi.responses import Response, JSONResponse
 from fastapi.encoders import jsonable_encoder
-from typing import List
+from typing import List, Optional
 from bson import ObjectId
 from datetime import datetime
 from pymongo import ReturnDocument # Import necessary for find_one_and_update option
@@ -65,12 +65,22 @@ async def create_word_pair(word_pair: WordPairBase = Body(...), collection: Asyn
     response_description="List all word pairs",
     response_model=List[WordPairInDB]
 )
-async def list_word_pairs(collection: AsyncIOMotorCollection = Depends(get_word_pair_collection)):
-    """Retrieve all word pairs from the database."""
+async def list_word_pairs(
+    collection: AsyncIOMotorCollection = Depends(get_word_pair_collection),
+    limit: Optional[int] = Query(None, description="Limit the number of word pairs returned, used for practice sessions")
+):
+    """Retrieve word pairs. Optionally limits the number returned."""
+    query = {} # Empty query to find all
+    word_pairs_cursor = collection.find(query)
+
+    if limit is not None and limit > 0:
+        word_pairs_cursor = word_pairs_cursor.limit(limit) # Apply limit if provided
+
     word_pairs = []
-    async for pair in collection.find():
+    async for pair in word_pairs_cursor:
         word_pairs.append(WordPairInDB.model_validate(pair))
-    return word_pairs
+
+    return word_pairs # Always return JSON list
 
 
 @router.get(

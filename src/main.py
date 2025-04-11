@@ -70,6 +70,13 @@ async def word_pairs_page(request: Request):
     """Serves the main Word Pairs UI page."""
     return templates.TemplateResponse("word_pair_list.html", {"request": request})
 
+@app.get("/ui/practice", response_class=HTMLResponse)
+async def practice_mode_page(request: Request):
+    """Serves the Practice Mode UI shell page."""
+    # This just serves the initial HTML shell.
+    # The actual practice content is loaded via HTMX calls.
+    return templates.TemplateResponse("practice_mode.html", {"request": request})
+
 # --- End UI Routes ---
 
 @app.get("/")
