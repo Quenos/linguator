@@ -139,4 +139,58 @@ async def add_practice_result(result_data: PracticeResultBase) -> PracticeResult
         return PracticeResultInDB.model_validate(created_result) # Use model_validate for Pydantic V2
     else:
         # This should ideally not happen if insert_one succeeds
-        raise RuntimeError("Failed to retrieve the newly inserted practice result.") 
+        raise RuntimeError("Failed to retrieve the newly inserted practice result.")
+
+async def calculate_progress_stats() -> dict:
+    """Calculates basic progress statistics from the practice_results collection."""
+    collection = get_collection("practice_results")
+    logger.info("Calculating progress statistics...")
+
+    pipeline = [
+        {
+            "$group": {
+                "_id": None, # Group all documents together
+                "totalAttempts": {"$sum": 1},
+                "correctAttempts": {"$sum": {"$cond": ["$is_correct", 1, 0]}},
+                "uniqueWordPairIds": {"$addToSet": "$word_pair_id"}
+            }
+        },
+        {
+            "$project": {
+                "_id": 0, # Exclude the default _id field
+                "total_unique_words_practiced": {"$size": "$uniqueWordPairIds"},
+                "total_attempts": "$totalAttempts",
+                "correct_attempts": "$correctAttempts",
+                "overall_accuracy_percentage": {
+                    "$cond": [
+                        {"$eq": ["$totalAttempts", 0]}, # Check if total attempts is 0
+                        None, # If 0, accuracy is None (or 0, depending on preference)
+                        {
+                            "$multiply": [
+                                {"$divide": ["$correctAttempts", "$totalAttempts"]},
+                                100
+                            ]
+                        } # Otherwise, calculate percentage
+                    ]
+                }
+            }
+        }
+    ]
+
+    try:
+        result = await collection.aggregate(pipeline).to_list(length=1)
+        if result:
+            logger.info(f"Progress stats calculated: {result[0]}")
+            return result[0]
+        else:
+            # Handle case where there are no practice results yet
+            logger.info("No practice results found, returning default stats.")
+            return {
+                "total_unique_words_practiced": 0,
+                "total_attempts": 0,
+                "correct_attempts": 0,
+                "overall_accuracy_percentage": None
+            }
+    except Exception as e:
+        logger.error(f"Error calculating progress stats: {e}")
+        raise # Re-raise the exception to be handled by the caller (API endpoint) 

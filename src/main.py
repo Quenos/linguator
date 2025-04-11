@@ -4,12 +4,12 @@ from fastapi_babel import Babel, BabelConfigs, BabelMiddleware
 from contextlib import asynccontextmanager
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 import os
 # Use relative import since database.py is in the same directory
 from .database import connect_to_mongo, close_mongo_connection, get_database
 # Import the new router
-from .routers import word_pairs, practice
+from .routers import word_pairs, practice, progress
 import logging
 
 # Babel configuration - might still be needed for context
@@ -69,36 +69,14 @@ templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "src/frontend/templ
 # Include the word_pairs router with a prefix for API endpoints
 app.include_router(word_pairs.router, prefix="/word-pairs", tags=["Word Pairs"])
 app.include_router(practice.router)
+app.include_router(progress.router)
 
 # --- UI Routes ---
 
-@app.get("/", response_class=HTMLResponse)
+@app.get("/", response_class=RedirectResponse, status_code=302)
 async def read_root(request: Request):
-    """Serves the main page, redirecting or showing a welcome message."""
-    db_status = "Unknown"
-    ping_status = "N/A"
-    try:
-        db_instance = get_database() # Use the function to get the DB instance
-        db_status = "Connected"
-        # Optional: Ping DB to be sure
-        await db_instance.command('ping') # Use the obtained instance
-        ping_status = "Ping OK"
-    except RuntimeError as e:
-        # Handle case where DB is not initialized
-        db_status = "Not Connected"
-        ping_status = f"Check Failed: {e}"
-        logger.warning(f"Database not initialized when checking root page: {e}")
-    except Exception as e:
-        db_status = "Error"
-        ping_status = f"Ping Failed: {e}"
-        logger.error(f"MongoDB connection error on root page: {e}")
-
-    return templates.TemplateResponse("index.html", {
-        "request": request,
-        "title": "Welcome to Linguator",
-        "db_status": db_status,
-        "ping_status": ping_status
-    })
+    """Redirects the root path to the word pairs UI page."""
+    return RedirectResponse(url="/ui/word-pairs")
 
 @app.get("/ui/word-pairs", response_class=HTMLResponse)
 async def word_pairs_page(request: Request):
