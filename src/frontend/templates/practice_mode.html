@@ -25,6 +25,16 @@
             <option value="Other">{{ _('Other') }}</option>
         </select>
     </div>
+    
+    <!-- Add practice direction selector -->
+    <div style="margin-bottom: 15px;">
+        <label for="practice-direction">{{ _('Practice Direction:') }}</label>
+        <select id="practice-direction" style="padding: 8px; margin-left: 8px;">
+            <option value="source_to_target">{{ _('Source → Target') }}</option>
+            <option value="target_to_source">{{ _('Target → Source') }}</option>
+        </select>
+    </div>
+    
     <div id="practice-area" class="practice-area">
         <button id="start-practice-btn" class="start-button">{{ _('Start Practice Session') }}</button>
     </div>
@@ -55,6 +65,8 @@
     const msgHttpError = "{{ _('HTTP error! Status:') }}";
     const msgCannotRecordFeedback = "{{ _('Cannot record feedback: currentWordPair or its ID is missing.') }}";
     const msgUnknownError = "{{ _('Unknown error') }}";
+    const msgSourceToTarget = "{{ _('Source → Target') }}";
+    const msgTargetToSource = "{{ _('Target → Source') }}";
 
     let currentPracticePairs = [];
     let currentQuestionIndex = -1;
@@ -63,6 +75,7 @@
     const startButton = document.getElementById('start-practice-btn');
     const practiceArea = document.getElementById('practice-area');
     const categoryFilter = document.getElementById('category-filter');
+    const practiceDirection = document.getElementById('practice-direction');
 
     startButton.addEventListener('click', async () => {
         console.log('Start Practice clicked');
@@ -112,6 +125,18 @@
         }
         currentWordPair = currentPracticePairs[index];
         
+        // Get the selected practice direction
+        const direction = practiceDirection.value;
+        const isSourceToTarget = direction === 'source_to_target';
+        
+        // Determine which word to show first and which as answer based on direction
+        const questionWord = isSourceToTarget ? currentWordPair.source_word : currentWordPair.target_word;
+        const answerWord = isSourceToTarget ? currentWordPair.target_word : currentWordPair.source_word;
+        
+        // Labels based on direction
+        const questionLabel = isSourceToTarget ? msgSourceWord : msgTargetWord;
+        const answerLabel = isSourceToTarget ? msgTargetWord : msgSourceWord;
+        
         // Create a flashcard style display
         const flashcardTitle = msgFlashcardTitle
             .replace('%(current)s', index + 1)
@@ -120,9 +145,9 @@
         const flashcardHTML = `
             <div id="flashcard" style="border: 1px solid #ccc; padding: 20px; margin: 20px 0; border-radius: 5px;">
                 <h3>${escapeHTML(flashcardTitle)}</h3>
-                <p><strong>${escapeHTML(msgSourceWord)}</strong> ${escapeHTML(currentWordPair.source_word)}</p>
+                <p><strong>${escapeHTML(questionLabel)}</strong> ${escapeHTML(questionWord)}</p>
                 <div id="answer-section" style="display: none;">
-                    <p><strong>${escapeHTML(msgTargetWord)}</strong> ${escapeHTML(currentWordPair.target_word)}</p>
+                    <p><strong>${escapeHTML(answerLabel)}</strong> ${escapeHTML(answerWord)}</p>
                 </div>
                 <button id="show-answer-btn">${escapeHTML(msgShowAnswer)}</button>
             </div>
