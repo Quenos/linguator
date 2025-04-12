@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-04-11 22:01+0200\n"
+"POT-Creation-Date: 2025-04-12 14:45+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,695 +18,469 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: src/frontend/templates/base.html:5 src/frontend/templates/base.html:71
 msgid "Linguator"
 msgstr ""
 
-#: src/frontend/templates/base.html:52
-#: src/frontend/templates/word_pair_list.html:90
 msgid "Word Pairs"
 msgstr "Word Pairs"
 
-#: src/frontend/templates/base.html:53
-#, fuzzy
 msgid "Practice"
 msgstr "Practice Mode"
 
-#: src/frontend/templates/base.html:54
-#, fuzzy
 msgid "Progress"
 msgstr "View Progress"
 
-#: src/frontend/templates/base.html:57
 msgid "Language"
 msgstr ""
 
-#: src/frontend/templates/base.html:59
 msgid "English"
 msgstr "English"
 
-#: src/frontend/templates/base.html:60
 msgid "Italian"
 msgstr "Italiano"
 
-#: src/frontend/templates/base.html:61
 msgid "Russian"
 msgstr "Русский"
 
-#: src/frontend/templates/practice_mode.html:3
-#: src/frontend/templates/practice_mode.html:8
 msgid "Practice Mode"
 msgstr "Practice Mode"
 
-#: src/frontend/templates/practice_mode.html:9
-#, fuzzy
 msgid "Review your word pairs."
 msgstr "Save Word Pair"
 
-#: src/frontend/templates/practice_mode.html:12
 msgid "Start Practice Session"
 msgstr ""
 
-#: src/frontend/templates/practice_mode.html:20
-#, python-format
 msgid "Marked as %(status)s."
 msgstr ""
 
-#: src/frontend/templates/practice_mode.html:21
 msgid "Correct"
 msgstr ""
 
-#: src/frontend/templates/practice_mode.html:22
 msgid "Incorrect"
 msgstr ""
 
-#: src/frontend/templates/practice_mode.html:23
 msgid "Next Question"
 msgstr ""
 
-#: src/frontend/templates/practice_mode.html:24
 msgid "Finish Session"
 msgstr ""
 
-#: src/frontend/templates/practice_mode.html:25
 msgid "Session Complete!"
 msgstr ""
 
-#: src/frontend/templates/practice_mode.html:26
-#, python-format
 msgid "You have reviewed all %(count)s word pairs."
 msgstr ""
 
-#: src/frontend/templates/practice_mode.html:27
-#, fuzzy
 msgid "Practice Again"
 msgstr "Practice Mode"
 
-#: src/frontend/templates/practice_mode.html:28
-#, fuzzy
 msgid "Loading questions..."
 msgstr "Loading statistics..."
 
-#: src/frontend/templates/practice_mode.html:29
 msgid "No word pairs found to practice."
 msgstr ""
 
-#: src/frontend/templates/practice_mode.html:30
-#, python-format
 msgid "Error loading questions: %(error_message)s. Please try again."
 msgstr ""
 
-#: src/frontend/templates/practice_mode.html:31
 msgid "Invalid question index."
 msgstr ""
 
-#: src/frontend/templates/practice_mode.html:32
-#, python-format
 msgid "Flashcard (%(current)s / %(total)s)"
 msgstr ""
 
-#: src/frontend/templates/practice_mode.html:33
-#: src/frontend/templates/word_pair_list.html:135
-#: src/frontend/templates/word_pair_list.html:176
 msgid "Source Word:"
 msgstr "Source Word:"
 
-#: src/frontend/templates/practice_mode.html:34
-#: src/frontend/templates/word_pair_list.html:139
-#: src/frontend/templates/word_pair_list.html:180
 msgid "Target Word:"
 msgstr "Target Word:"
 
-#: src/frontend/templates/practice_mode.html:35
 msgid "Show Answer"
 msgstr ""
 
-#: src/frontend/templates/practice_mode.html:36
 msgid "Did you know the answer?"
 msgstr ""
 
-#: src/frontend/templates/practice_mode.html:37
 msgid "Error saving practice result:"
 msgstr ""
 
-#: src/frontend/templates/practice_mode.html:38
 msgid "HTTP error! Status:"
 msgstr ""
 
-#: src/frontend/templates/practice_mode.html:39
 msgid "Cannot record feedback: currentWordPair or its ID is missing."
 msgstr ""
 
-#: src/frontend/templates/practice_mode.html:40
 msgid "Unknown error"
 msgstr ""
 
-#: src/frontend/templates/progress_tracking.html:3
-#: src/frontend/templates/progress_tracking.html:22
+msgid "Practice Direction:"
+msgstr "Practice Direction:"
+
+msgid "Source → Target"
+msgstr "Source → Target"
+
+msgid "Target → Source"
+msgstr "Target → Source"
+
 msgid "Progress Tracking"
 msgstr "Progress Tracking"
 
-#: src/frontend/templates/progress_tracking.html:24
 msgid "Loading statistics..."
 msgstr "Loading statistics..."
 
-#: src/frontend/templates/progress_tracking.html:25
 msgid "Failed to load statistics. Please try again later."
 msgstr "Failed to load statistics. Please try again later."
 
-#: src/frontend/templates/progress_tracking.html:29
 msgid "Total Unique Words Practiced:"
 msgstr "Total Unique Words Practiced:"
 
-#: src/frontend/templates/progress_tracking.html:33
 msgid "Overall Accuracy:"
 msgstr "Overall Accuracy:"
 
-#: src/frontend/templates/progress_tracking.html:39
 msgid "Reset Progress Data"
 msgstr "Reset Progress Data"
 
-#: src/frontend/templates/progress_tracking.html:40
 msgid "Progress data has been reset successfully!"
 msgstr "Progress data has been reset successfully!"
 
-#: src/frontend/templates/progress_tracking.html:47
 msgid "HTTP error! status:"
 msgstr ""
 
-#: src/frontend/templates/progress_tracking.html:48
 msgid "Error fetching progress stats:"
 msgstr ""
 
-#: src/frontend/templates/progress_tracking.html:49
 msgid "Error resetting progress data:"
 msgstr "Error resetting progress data:"
 
-#: src/frontend/templates/progress_tracking.html:50
 msgid ""
-"Are you sure you want to reset all progress data? This action cannot be "
-"undone."
-msgstr "Are you sure you want to reset all progress data? This action cannot be undone."
+"Are you sure you want to reset "
+"all progress data? This action cannot"
+" be undone."
+msgstr ""
+"Are you sure you want to reset "
+"all progress data? This action cannot"
+" be undone."
 
-#: src/frontend/templates/word_pair_list.html:3
 msgid "Word Pair List"
 msgstr "Word Pair List"
 
-#: src/frontend/templates/word_pair_list.html:96
 msgid "Search by source or target word..."
 msgstr "Search by source or target word..."
 
-#: src/frontend/templates/word_pair_list.html:98
 msgid "All Categories"
 msgstr "All Categories"
 
-#: src/frontend/templates/word_pair_list.html:99
-#: src/frontend/templates/word_pair_list.html:146
-#: src/frontend/templates/word_pair_list.html:187
 msgid "Noun"
 msgstr "Noun"
 
-#: src/frontend/templates/word_pair_list.html:100
-#: src/frontend/templates/word_pair_list.html:147
-#: src/frontend/templates/word_pair_list.html:188
 msgid "Pronoun"
 msgstr "Pronoun"
 
-#: src/frontend/templates/word_pair_list.html:101
-#: src/frontend/templates/word_pair_list.html:148
-#: src/frontend/templates/word_pair_list.html:189
 msgid "Verb"
 msgstr "Verb"
 
-#: src/frontend/templates/word_pair_list.html:102
-#: src/frontend/templates/word_pair_list.html:149
-#: src/frontend/templates/word_pair_list.html:190
 msgid "Adjective"
 msgstr "Adjective"
 
-#: src/frontend/templates/word_pair_list.html:103
-#: src/frontend/templates/word_pair_list.html:150
-#: src/frontend/templates/word_pair_list.html:191
 msgid "Adverb"
 msgstr "Adverb"
 
-#: src/frontend/templates/word_pair_list.html:104
-#: src/frontend/templates/word_pair_list.html:151
-#: src/frontend/templates/word_pair_list.html:192
 msgid "Preposition"
 msgstr "Preposition"
 
-#: src/frontend/templates/word_pair_list.html:105
-#: src/frontend/templates/word_pair_list.html:152
-#: src/frontend/templates/word_pair_list.html:193
 msgid "Conjunction"
 msgstr "Conjunction"
 
-#: src/frontend/templates/word_pair_list.html:106
-#: src/frontend/templates/word_pair_list.html:153
-#: src/frontend/templates/word_pair_list.html:194
 msgid "Interjection"
 msgstr "Interjection"
 
-#: src/frontend/templates/word_pair_list.html:107
-#: src/frontend/templates/word_pair_list.html:154
-#: src/frontend/templates/word_pair_list.html:195
 msgid "Phrase"
 msgstr "Phrase"
 
-#: src/frontend/templates/word_pair_list.html:108
-#: src/frontend/templates/word_pair_list.html:155
-#: src/frontend/templates/word_pair_list.html:196
 msgid "Sentence"
 msgstr "Sentence"
 
-#: src/frontend/templates/word_pair_list.html:109
-#: src/frontend/templates/word_pair_list.html:156
-#: src/frontend/templates/word_pair_list.html:197
 msgid "Other"
 msgstr "Other"
 
-#: src/frontend/templates/word_pair_list.html:117
 msgid "Source Word"
 msgstr "Source Word"
 
-#: src/frontend/templates/word_pair_list.html:118
 msgid "Target Word"
 msgstr "Target Word"
 
-#: src/frontend/templates/word_pair_list.html:119
 msgid "Category"
 msgstr "Category"
 
-#: src/frontend/templates/word_pair_list.html:120
 msgid "Example Sentence"
 msgstr "Example Sentence"
 
-#: src/frontend/templates/word_pair_list.html:121
 msgid "Actions"
 msgstr "Actions"
 
-#: src/frontend/templates/word_pair_list.html:126
 msgid "Loading word pairs..."
 msgstr "Loading word pairs..."
 
-#: src/frontend/templates/word_pair_list.html:132
 msgid "Add New Word Pair"
 msgstr "Add New Word Pair"
 
-#: src/frontend/templates/word_pair_list.html:143
-#: src/frontend/templates/word_pair_list.html:184
 msgid "Category:"
 msgstr "Category:"
 
-#: src/frontend/templates/word_pair_list.html:145
-#: src/frontend/templates/word_pair_list.html:186
 msgid "Select a category"
 msgstr "Select a category"
 
-#: src/frontend/templates/word_pair_list.html:160
-#: src/frontend/templates/word_pair_list.html:201
 msgid "Example Sentence:"
 msgstr "Example Sentence:"
 
-#: src/frontend/templates/word_pair_list.html:163
 msgid "Save Word Pair"
 msgstr "Save Word Pair"
 
-#: src/frontend/templates/word_pair_list.html:172
 msgid "Edit Word Pair"
 msgstr "Edit Word Pair"
 
-#: src/frontend/templates/word_pair_list.html:204
 msgid "Save Changes"
 msgstr "Save Changes"
 
-#: src/frontend/templates/word_pair_list.html:205
 msgid "Cancel"
 msgstr "Cancel"
 
-#: src/frontend/templates/word_pair_list.html:216
-#, fuzzy
 msgid "No word pairs found."
 msgstr "Word Pairs"
 
-#: src/frontend/templates/word_pair_list.html:217
 msgid "Error loading data."
 msgstr ""
 
-#: src/frontend/templates/word_pair_list.html:218
 msgid "Please fill in all required fields."
 msgstr ""
 
-#: src/frontend/templates/word_pair_list.html:219
-#, fuzzy
 msgid "Error adding word pair."
 msgstr "Loading word pairs..."
 
-#: src/frontend/templates/word_pair_list.html:220
 msgid "Error adding word pair. Invalid server response."
 msgstr ""
 
-#: src/frontend/templates/word_pair_list.html:221
 msgid "Word pair added successfully!"
 msgstr ""
 
-#: src/frontend/templates/word_pair_list.html:222
-#, fuzzy
 msgid "Error updating word pair."
 msgstr "Loading word pairs..."
 
-#: src/frontend/templates/word_pair_list.html:223
 msgid "Error updating word pair. Invalid server response."
 msgstr ""
 
-#: src/frontend/templates/word_pair_list.html:224
 msgid "Word pair updated successfully!"
 msgstr ""
 
-#: src/frontend/templates/word_pair_list.html:225
 msgid "Are you sure you want to delete this word pair?"
 msgstr ""
 
-#: src/frontend/templates/word_pair_list.html:226
-#, fuzzy
 msgid "Error deleting word pair."
 msgstr "Edit Word Pair"
 
-#: src/frontend/templates/word_pair_list.html:227
-#, fuzzy
 msgid "Error deleting word pair:"
 msgstr "Edit Word Pair"
 
-#: src/frontend/templates/word_pair_list.html:295
 msgid "Edit"
 msgstr ""
 
-#: src/frontend/templates/word_pair_list.html:296
 msgid "Delete"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/_termui_impl.py:556
-#, python-brace-format
 msgid "{editor}: Editing failed"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/_termui_impl.py:560
-#, python-brace-format
 msgid "{editor}: Editing failed: {e}"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/core.py:1124
 msgid "Aborted!"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/core.py:1349
-#: venv/lib/python3.10/site-packages/click/core.py:1379
-#, python-brace-format
 msgid "(Deprecated) {text}"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/core.py:1396
 msgid "Options"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/core.py:1422
-#, python-brace-format
 msgid "Got unexpected extra argument ({args})"
 msgid_plural "Got unexpected extra arguments ({args})"
 msgstr[0] ""
 msgstr[1] ""
 
-#: venv/lib/python3.10/site-packages/click/core.py:1438
-#, python-brace-format
 msgid "DeprecationWarning: The command {name!r} is deprecated."
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/core.py:1645
 msgid "Commands"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/core.py:1677
 msgid "Missing command."
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/core.py:1755
-#, python-brace-format
 msgid "No such command {name!r}."
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/core.py:2313
 msgid "Value must be an iterable."
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/core.py:2334
-#, python-brace-format
 msgid "Takes {nargs} values but 1 was given."
 msgid_plural "Takes {nargs} values but {len} were given."
 msgstr[0] ""
 msgstr[1] ""
 
-#: venv/lib/python3.10/site-packages/click/core.py:2783
-#, python-brace-format
 msgid "env var: {var}"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/core.py:2813
 msgid "(dynamic)"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/core.py:2828
-#, python-brace-format
 msgid "default: {default}"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/core.py:2841
 msgid "required"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/decorators.py:457
-#, python-format
 msgid "%(prog)s, version %(version)s"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/decorators.py:520
 msgid "Show the version and exit."
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/decorators.py:541
 msgid "Show this message and exit."
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/exceptions.py:49
-#: venv/lib/python3.10/site-packages/click/exceptions.py:88
-#, python-brace-format
 msgid "Error: {message}"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/exceptions.py:80
-#, python-brace-format
 msgid "Try '{command} {option}' for help."
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/exceptions.py:129
-#, python-brace-format
 msgid "Invalid value: {message}"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/exceptions.py:131
-#, python-brace-format
 msgid "Invalid value for {param_hint}: {message}"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/exceptions.py:187
 msgid "Missing argument"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/exceptions.py:189
 msgid "Missing option"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/exceptions.py:191
 msgid "Missing parameter"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/exceptions.py:193
-#, python-brace-format
 msgid "Missing {param_type}"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/exceptions.py:200
-#, python-brace-format
 msgid "Missing parameter: {param_name}"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/exceptions.py:220
-#, python-brace-format
 msgid "No such option: {name}"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/exceptions.py:232
-#, python-brace-format
 msgid "Did you mean {possibility}?"
 msgid_plural "(Possible options: {possibilities})"
 msgstr[0] ""
 msgstr[1] ""
 
-#: venv/lib/python3.10/site-packages/click/exceptions.py:270
 msgid "unknown error"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/exceptions.py:277
-#, python-brace-format
 msgid "Could not open file {filename!r}: {message}"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/parser.py:233
-#, python-brace-format
 msgid "Argument {name!r} takes {nargs} values."
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/parser.py:415
-#, python-brace-format
 msgid "Option {name!r} does not take a value."
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/parser.py:476
-#, python-brace-format
 msgid "Option {name!r} requires an argument."
 msgid_plural "Option {name!r} requires {nargs} arguments."
 msgstr[0] ""
 msgstr[1] ""
 
-#: venv/lib/python3.10/site-packages/click/shell_completion.py:326
 msgid "Shell completion is not supported for Bash versions older than 4.4."
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/shell_completion.py:333
 msgid "Couldn't detect Bash version, shell completion is not supported."
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/termui.py:158
 msgid "Repeat for confirmation"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/termui.py:174
 msgid "Error: The value you entered was invalid."
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/termui.py:176
-#, python-brace-format
 msgid "Error: {e.message}"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/termui.py:187
 msgid "Error: The two entered values do not match."
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/termui.py:243
 msgid "Error: invalid input"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/termui.py:773
 msgid "Press any key to continue..."
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/types.py:267
-#, python-brace-format
 msgid ""
 "Choose from:\n"
 "\t{choices}"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/types.py:299
-#, python-brace-format
 msgid "{value!r} is not {choice}."
 msgid_plural "{value!r} is not one of {choices}."
 msgstr[0] ""
 msgstr[1] ""
 
-#: venv/lib/python3.10/site-packages/click/types.py:393
-#, python-brace-format
 msgid "{value!r} does not match the format {format}."
 msgid_plural "{value!r} does not match the formats {formats}."
 msgstr[0] ""
 msgstr[1] ""
 
-#: venv/lib/python3.10/site-packages/click/types.py:415
-#, python-brace-format
 msgid "{value!r} is not a valid {number_type}."
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/types.py:471
-#, python-brace-format
 msgid "{value} is not in the range {range}."
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/types.py:612
-#, python-brace-format
 msgid "{value!r} is not a valid boolean."
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/types.py:636
-#, python-brace-format
 msgid "{value!r} is not a valid UUID."
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/types.py:826
 msgid "file"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/types.py:828
 msgid "directory"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/types.py:830
 msgid "path"
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/types.py:881
-#, python-brace-format
 msgid "{name} {filename!r} does not exist."
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/types.py:890
-#, python-brace-format
 msgid "{name} {filename!r} is a file."
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/types.py:898
-#, python-brace-format
 msgid "{name} {filename!r} is a directory."
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/types.py:907
-#, python-brace-format
 msgid "{name} {filename!r} is not readable."
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/types.py:916
-#, python-brace-format
 msgid "{name} {filename!r} is not writable."
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/types.py:925
-#, python-brace-format
 msgid "{name} {filename!r} is not executable."
 msgstr ""
 
-#: venv/lib/python3.10/site-packages/click/types.py:992
-#, python-brace-format
 msgid "{len_type} values are required, but {len_value} was given."
 msgid_plural "{len_type} values are required, but {len_value} were given."
 msgstr[0] ""
 msgstr[1] ""
-
-#~ msgid "Hello World"
-#~ msgstr "Hello World"
-
-#~ msgid "Back to Word Pairs"
-#~ msgstr "Back to Word Pairs"
-
-#~ msgid "Go To Practice"
-#~ msgstr "Go To Practice"
 
