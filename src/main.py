@@ -11,7 +11,7 @@ import os
 from jinja2 import Environment, FileSystemLoader # Import Jinja2 Environment components
 from typing import Optional
 # Use relative import since database.py is in the same directory
-from .database import connect_to_mongo, close_mongo_connection, get_database
+from .database import connect_to_mongo, close_mongo_connection, get_database, upgrade_word_pairs_with_metrics
 # Import the new router
 from .routers import word_pairs, practice, progress
 import logging
@@ -55,6 +55,15 @@ async def lifespan(app: FastAPI):
     # Code to run on startup
     await connect_to_mongo()
     print("Database connection established.")
+    
+    # Upgrade existing word pairs with metrics fields
+    try:
+        upgraded_count = await upgrade_word_pairs_with_metrics()
+        print(f"Upgraded {upgraded_count} word pairs with metrics fields.")
+    except Exception as e:
+        print(f"Warning: Failed to upgrade word pairs with metrics: {e}")
+        # Continue with startup even if this fails
+    
     yield
     # Code to run on shutdown
     await close_mongo_connection()

@@ -109,6 +109,39 @@ close_mongo_connection = db_manager.close_mongo_connection
 get_database = db_manager.get_database
 get_collection = db_manager.get_collection
 
+# Function to upgrade existing word pairs with metrics fields
+async def upgrade_word_pairs_with_metrics():
+    """
+    Updates all existing word pairs in the database to include metrics fields if they don't already have them.
+    This ensures backward compatibility with existing data.
+    """
+    collection = get_collection("word_pairs")
+    logger.info("Upgrading existing word pairs with metrics fields...")
+    
+    try:
+        # Update all documents that don't have the correct_count or incorrect_count fields
+        # $setOnInsert would be ideal but we're updating existing documents, so we use $set
+        result = await collection.update_many(
+            {
+                "$or": [
+                    {"correct_count": {"$exists": False}},
+                    {"incorrect_count": {"$exists": False}}
+                ]
+            },
+            {
+                "$set": {
+                    "correct_count": 0,
+                    "incorrect_count": 0
+                }
+            }
+        )
+        
+        logger.info(f"Updated {result.modified_count} word pairs with default metrics fields")
+        return result.modified_count
+    except Exception as e:
+        logger.error(f"Error upgrading word pairs with metrics: {e}")
+        raise
+
 # Example of how to get a specific collection (can be used in other modules)
 # from .database import get_collection
 #

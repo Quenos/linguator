@@ -80,6 +80,9 @@ class WordPairInDB(WordPairBase):
     # Timestamps are set during database operations, no default factory needed here
     created_at: datetime
     updated_at: datetime
+    # Add metrics fields with default values of 0
+    correct_count: int = Field(default=0, description="Count of correct answers")
+    incorrect_count: int = Field(default=0, description="Count of incorrect answers")
 
     model_config = ConfigDict(
         populate_by_name = True, # Renamed from allow_population_by_field_name
@@ -91,7 +94,9 @@ class WordPairInDB(WordPairBase):
                 "category": "noun",
                 "example_sentence": "The world is round.",
                 "created_at": "2023-01-01T12:00:00Z",
-                "updated_at": "2023-01-01T12:00:00Z"
+                "updated_at": "2023-01-01T12:00:00Z",
+                "correct_count": 5,
+                "incorrect_count": 2
             }
         }
     )

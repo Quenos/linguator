@@ -5,6 +5,7 @@ from typing import List, Optional
 from bson import ObjectId
 from datetime import datetime
 from pymongo import ReturnDocument # Import necessary for find_one_and_update option
+from pydantic import BaseModel, Field # Add this import
 
 # Assuming database.py and models.py are in the parent directory (src)
 # Adjust imports based on your project structure if necessary
@@ -16,6 +17,12 @@ from ..models import WordPairBase, WordPairInDB, PyObjectId # Use relative impor
 from motor.motor_asyncio import AsyncIOMotorDatabase, AsyncIOMotorCollection
 
 COLLECTION_NAME = "word_pairs"
+
+# --- New model for updating metrics ---
+class WordPairMetricUpdate(BaseModel):
+    """Model for updating a word pair's metrics."""
+    is_correct: bool = Field(..., description="Whether the answer was correct")
+# --- End new model ---
 
 # --- Helper Dependency for ID Validation ---
 async def validate_object_id(id: str) -> ObjectId:
@@ -151,4 +158,38 @@ async def delete_word_pair(
         # Return No Content which is standard for DELETE success
         return Response(status_code=status.HTTP_204_NO_CONTENT)
 
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Word pair with ID {obj_id} not found") 
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Word pair with ID {obj_id} not found")
+
+# --- New endpoint for updating metrics ---
+@router.post(
+    "/{id}/metrics",
+    response_description="Update metrics for a word pair",
+    response_model=WordPairInDB
+)
+async def update_word_pair_metrics(
+    obj_id: ObjectId = Depends(validate_object_id),
+    metric_update: WordPairMetricUpdate = Body(...),
+    collection: AsyncIOMotorCollection = Depends(get_word_pair_collection)
+):
+    """
+    Update metrics for a word pair based on whether the answer was correct.
+    Increments either correct_count or incorrect_count depending on is_correct field.
+    """
+    # Determine which field to increment based on is_correct
+    field_to_increment = "correct_count" if metric_update.is_correct else "incorrect_count"
+    
+    # Update the document using MongoDB's $inc operator
+    updated_doc = await collection.find_one_and_update(
+        {"_id": obj_id},
+        {
+            "$inc": {field_to_increment: 1},
+            "$set": {"updated_at": datetime.utcnow()}
+        },
+        return_document=ReturnDocument.AFTER
+    )
+    
+    if updated_doc:
+        return WordPairInDB.model_validate(updated_doc)
+    else:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Word pair with ID {obj_id} not found")
+# --- End new endpoint --- 

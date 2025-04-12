@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from motor.motor_asyncio import AsyncIOMotorCollection
 from typing import List, Optional
 import random # Although $sample is preferred, keep import for potential future use
+import httpx # Add this import for making internal API calls
+from datetime import datetime
 
 from src.database import get_collection, add_practice_result
 from ..models import WordPairInDB, PracticeResultBase, PracticeResultInDB
@@ -72,10 +74,35 @@ async def get_practice_session_word_pairs(
 async def record_practice_result(result: PracticeResultBase):
     """
     Receives and stores the result of a single practice item (e.g., flashcard answer).
+    Also updates the metrics for the word pair.
     """
     try:
         # Add the result to the database
         created_result = await add_practice_result(result)
+        
+        # Now update the metrics for the word pair
+        try:
+            # Get the word pair collection
+            word_pair_collection = get_collection("word_pairs")
+            
+            # Update the word pair metrics directly in the database
+            # This is more efficient than making an internal API call
+            word_pair_id = result.word_pair_id
+            field_to_increment = "correct_count" if result.is_correct else "incorrect_count"
+            
+            await word_pair_collection.update_one(
+                {"_id": word_pair_id},
+                {
+                    "$inc": {field_to_increment: 1},
+                    "$set": {"updated_at": datetime.utcnow()}
+                }
+            )
+            
+        except Exception as e:
+            # Log the error but don't fail the entire request
+            print(f"Error updating word pair metrics: {e}")
+            # The practice result is already stored, so we can continue
+        
         return created_result
     except Exception as e:
         # Log the exception
