@@ -218,7 +218,7 @@ msgstr "Невозможно записать отзыв: отсутствует
 
 #: src/frontend/templates/practice_mode.html:40
 msgid "Unknown error"
-msgstr "неизвестная ошибка"
+msgstr "Неизвестная ошибка"
 
 #: src/frontend/templates/practice_mode.html:233
 msgid "Practice Direction:"
@@ -235,6 +235,12 @@ msgstr "Целевое → Исходное"
 #: src/frontend/templates/progress_tracking.html:3
 msgid "Progress Tracking"
 msgstr "Отслеживание прогресса"
+
+msgid "Prioritize difficult words"
+msgstr "Приоритет сложным словам"
+
+msgid "Words with higher incorrect:correct ratios will appear more frequently"
+msgstr "Слова с более высоким соотношением неправильных:правильных ответов будут появляться чаще"
 
 #~ msgid "Loading statistics..."
 #~ msgstr "Загрузка статистики..."

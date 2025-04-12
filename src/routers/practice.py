@@ -27,11 +27,12 @@ def get_word_pair_collection() -> AsyncIOMotorCollection:
 async def get_practice_session_word_pairs(
     collection: AsyncIOMotorCollection = Depends(get_word_pair_collection),
     count: Optional[int] = Query(DEFAULT_PRACTICE_COUNT, description=f"Number of word pairs for the session (default: {DEFAULT_PRACTICE_COUNT})"),
-    category: Optional[str] = Query(None, description="Filter word pairs by category")
+    category: Optional[str] = Query(None, description="Filter word pairs by category"),
+    prioritize: Optional[bool] = Query(False, description="Prioritize word pairs with high incorrect:correct ratio")
 ):
     """
     Retrieves a randomized list of word pairs for a practice session.
-    Uses MongoDB's $sample aggregation stage for efficiency.
+    If prioritize=True, words with higher incorrect:correct ratios are given higher probability.
     Can be filtered by category if specified.
     """
     if count is None or count <= 0:
@@ -43,8 +44,55 @@ async def get_practice_session_word_pairs(
     if category:
         pipeline.append({"$match": {"category": category}})
     
-    # Add random sampling
-    pipeline.append({"$sample": {"size": count}})
+    if prioritize:
+        # Add fields to calculate the difficulty ratio
+        pipeline.append({
+            "$addFields": {
+                # Set ratio to 0 if no practice (correct+incorrect = 0)
+                # For words with some practice (>0), calculate the ratio
+                # Add small constant (0.01) to avoid division by zero
+                "difficulty_ratio": {
+                    "$cond": [
+                        {"$eq": [{"$add": ["$correct_count", "$incorrect_count"]}, 0]},
+                        0.5,  # Default ratio for unpracticed words
+                        {"$divide": [
+                            "$incorrect_count", 
+                            {"$add": ["$correct_count", "$incorrect_count", 0.01]}
+                        ]}
+                    ]
+                }
+            }
+        })
+        
+        # Add a random weight field that's biased by the difficulty ratio
+        # Words with higher ratios get exponentially higher chances
+        pipeline.append({
+            "$addFields": {
+                "priority_weight": {
+                    "$pow": [
+                        # Base: e (approximately 2.718)
+                        2.718, 
+                        # Exponent: difficulty_ratio * 2
+                        # This gives exponential priority to higher ratios
+                        {"$multiply": ["$difficulty_ratio", 2]}
+                    ]
+                }
+            }
+        })
+        
+        # Add randomized sampling based on the weight field
+        pipeline.append({"$sample": {"size": count}})
+        
+        # Remove the temporary fields we added
+        pipeline.append({
+            "$project": {
+                "difficulty_ratio": 0,
+                "priority_weight": 0
+            }
+        })
+    else:
+        # Standard random sampling without prioritization
+        pipeline.append({"$sample": {"size": count}})
 
     try:
         word_pairs_cursor = collection.aggregate(pipeline)

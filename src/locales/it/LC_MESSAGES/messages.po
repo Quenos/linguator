@@ -632,3 +632,9 @@ msgid_plural "{len_type} values are required, but {len_value} were given."
 msgstr[0] "Sono richiesti {len_type} valori, ma ne è stato fornito {len_value}."
 msgstr[1] "Sono richiesti {len_type} valori, ma ne sono stati forniti {len_value}."
 
+msgid "Prioritize difficult words"
+msgstr "Dai priorità alle parole difficili"
+
+msgid "Words with higher incorrect:correct ratios will appear more frequently"
+msgstr "Le parole con un rapporto errato:corretto più alto appariranno più frequentemente"
+

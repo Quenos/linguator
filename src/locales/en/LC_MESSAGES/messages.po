@@ -112,7 +112,7 @@ msgid "Cannot record feedback: currentWordPair or its ID is missing."
 msgstr ""
 
 msgid "Unknown error"
-msgstr ""
+msgstr "Unknown error"
 
 msgid "Practice Direction:"
 msgstr "Practice Direction:"
@@ -483,4 +483,10 @@ msgid "{len_type} values are required, but {len_value} was given."
 msgid_plural "{len_type} values are required, but {len_value} were given."
 msgstr[0] ""
 msgstr[1] ""
+
+msgid "Prioritize difficult words"
+msgstr "Prioritize difficult words"
+
+msgid "Words with higher incorrect:correct ratios will appear more frequently"
+msgstr "Words with higher incorrect:correct ratios will appear more frequently"
 

@@ -35,6 +35,13 @@
         </select>
     </div>
     
+    <!-- Add prioritization checkbox -->
+    <div style="margin-bottom: 15px;">
+        <input type="checkbox" id="prioritize-difficult" checked>
+        <label for="prioritize-difficult">{{ _('Prioritize difficult words') }}</label>
+        <span class="tooltip" style="cursor: help; margin-left: 5px;" title="{{ _('Words with higher incorrect:correct ratios will appear more frequently') }}">ⓘ</span>
+    </div>
+    
     <div id="practice-area" class="practice-area">
         <button id="start-practice-btn" class="start-button">{{ _('Start Practice Session') }}</button>
     </div>
@@ -77,6 +84,7 @@
     const practiceArea = document.getElementById('practice-area');
     const categoryFilter = document.getElementById('category-filter');
     const practiceDirection = document.getElementById('practice-direction');
+    const prioritizeDifficult = document.getElementById('prioritize-difficult');
 
     startButton.addEventListener('click', async () => {
         console.log('Start Practice clicked');
@@ -84,12 +92,20 @@
         try {
             // Get the selected category
             const category = categoryFilter.value;
+            // Get the prioritization setting
+            const prioritize = prioritizeDifficult.checked;
             
-            // Use the dedicated practice session endpoint with category filter
-            const url = category 
-                ? `/practice-session/?category=${encodeURIComponent(category)}` 
-                : '/practice-session/';
-                
+            // Build the URL with all parameters
+            let url = '/practice-session/';
+            const params = new URLSearchParams();
+            
+            if (category) params.append('category', category);
+            if (prioritize) params.append('prioritize', 'true');
+            
+            if (params.toString()) {
+                url = `${url}?${params.toString()}`;
+            }
+            
             const response = await fetch(url); 
             if (!response.ok) {
                 // Try to get error detail from response body if possible
